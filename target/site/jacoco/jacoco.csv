@@ -1,0 +1,16 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+tarefa2-incompleta,inf300.util,Populator,2,2195,1,33,1,157,1,24,0,8
+tarefa2-incompleta,inf300.util,TPCW_Util,19,1694,4,15,4,46,4,19,1,8
+tarefa2-incompleta,inf300.servico,Bookstore.Counter,15,0,0,0,6,0,3,0,3,0
+tarefa2-incompleta,inf300.servico,Bookstore,157,1159,37,55,34,224,38,69,8,53
+tarefa2-incompleta,inf300.servico,Bookstore.new Comparator() {...},0,22,0,2,0,5,0,3,0,2
+tarefa2-incompleta,inf300.dominio,Book,46,156,2,2,16,57,16,22,14,22
+tarefa2-incompleta,inf300.dominio,CCTransaction,24,27,0,0,8,10,8,1,8,1
+tarefa2-incompleta,inf300.dominio,OrderLine,9,18,0,0,3,7,3,2,3,2
+tarefa2-incompleta,inf300.dominio,Address,30,105,7,7,10,23,16,4,9,4
+tarefa2-incompleta,inf300.dominio,Country,11,34,1,1,4,11,4,4,3,4
+tarefa2-incompleta,inf300.dominio,Cart,20,166,3,5,4,34,5,11,2,10
+tarefa2-incompleta,inf300.dominio,Customer,247,221,21,21,53,57,33,13,12,13
+tarefa2-incompleta,inf300.dominio,Author,12,21,0,0,4,8,4,2,4,2
+tarefa2-incompleta,inf300.dominio,CartLine,0,19,0,0,0,8,0,4,0,4
+tarefa2-incompleta,inf300.dominio,Order,27,97,0,2,9,26,9,7,9,6

@@ -1,0 +1,13 @@
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/Author.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/CartLine.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/CCTransaction.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/Address.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/Book.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/servico/Bookstore.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/util/TPCW_Util.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/Country.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/Order.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/OrderLine.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/Cart.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/util/Populator.java
+/home/arthur/projetos/github/arthurvdelg/inf300/inf323/tarefa2-incompleta/src/main/java/inf300/dominio/Customer.java

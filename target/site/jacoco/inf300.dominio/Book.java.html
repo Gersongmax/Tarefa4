@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Book.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tarefa2-incompleta</a> &gt; <a href="index.source.html" class="el_package">inf300.dominio</a> &gt; <span class="el_source">Book.java</span></div><h1>Book.java</h1><pre class="source lang-java linenums">package inf300.dominio;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * *&lt;img src=&quot;./doc-files/Book.png&quot; alt=&quot;Book&quot;&gt;
+ */
+public class Book implements Serializable {
+
+    private static final long serialVersionUID = 6505830715531808617L;
+
+    private final int id;
+    private final String title;
+    private Date pubDate;
+    private final String publisher;
+    private final String subject;
+    private final String desc;
+    private Book related1;
+    private Book related2;
+    private Book related3;
+    private Book related4;
+    private Book related5;
+    private String thumbnail;
+    private String image;
+    private final double srp;
+    private double cost;
+    private final Date avail;
+    private final String isbn;
+    private final int page;
+    private final String backing;
+    private final String dimensions;
+    private final Author author;
+    private int stock;
+
+    /**
+     *
+     * @param id
+     * @param title
+     * @param pubDate
+     * @param publisher
+     * @param subject
+     * @param desc
+     * @param thumbnail
+     * @param image
+     * @param srp
+     * @param cost
+     * @param avail
+     * @param isbn
+     * @param page
+     * @param backing
+     * @param dimensions
+     * @param author
+     * @param stock
+     */
+    public Book(int id, String title, Date pubDate, String publisher,
+            String subject, String desc, String thumbnail,
+            String image, double srp, double cost, Date avail, String isbn,
+            int page, String backing, String dimensions, Author author,
+<span class="fc" id="L60">            int stock) {</span>
+<span class="fc" id="L61">        this.id = id;</span>
+<span class="fc" id="L62">        this.title = title;</span>
+<span class="fc" id="L63">        this.pubDate = pubDate;</span>
+<span class="fc" id="L64">        this.publisher = publisher;</span>
+<span class="fc" id="L65">        this.subject = subject;</span>
+<span class="fc" id="L66">        this.desc = desc;</span>
+<span class="fc" id="L67">        this.related1 = null;</span>
+<span class="fc" id="L68">        this.related2 = null;</span>
+<span class="fc" id="L69">        this.related3 = null;</span>
+<span class="fc" id="L70">        this.related4 = null;</span>
+<span class="fc" id="L71">        this.related5 = null;</span>
+<span class="fc" id="L72">        this.thumbnail = thumbnail;</span>
+<span class="fc" id="L73">        this.image = image;</span>
+<span class="fc" id="L74">        this.srp = srp;</span>
+<span class="fc" id="L75">        this.cost = cost;</span>
+<span class="fc" id="L76">        this.avail = avail;</span>
+<span class="fc" id="L77">        this.isbn = isbn;</span>
+<span class="fc" id="L78">        this.page = page;</span>
+<span class="fc" id="L79">        this.backing = backing;</span>
+<span class="fc" id="L80">        this.dimensions = dimensions;</span>
+<span class="fc" id="L81">        this.author = author;</span>
+<span class="fc" id="L82">        this.stock = stock;</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     *
+     * @return
+     */
+    public String getTitle() {
+<span class="fc" id="L90">        return title;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getThumbnail() {
+<span class="fc" id="L98">        return thumbnail;</span>
+    }
+
+    /**
+     *
+     * @param thumbnail
+     */
+    public void setThumbnail(String thumbnail) {
+<span class="fc" id="L106">        this.thumbnail = thumbnail;</span>
+<span class="fc" id="L107">    }</span>
+
+    /**
+     *
+     * @param cost
+     */
+    public void setCost(double cost) {
+<span class="fc" id="L114">        this.cost = cost;</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     *
+     * @return
+     */
+    public String getImage() {
+<span class="fc" id="L122">        return image;</span>
+    }
+
+    /**
+     *
+     * @param image
+     */
+    public void setImage(String image) {
+<span class="fc" id="L130">        this.image = image;</span>
+<span class="fc" id="L131">    }</span>
+
+    /**
+     *
+     * @return
+     */
+    public Author getAuthor() {
+<span class="fc" id="L138">        return author;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getSrp() {
+<span class="nc" id="L146">        return srp;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getCost() {
+<span class="fc" id="L154">        return cost;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getDesc() {
+<span class="nc" id="L162">        return desc;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getPage() {
+<span class="nc" id="L170">        return page;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getBacking() {
+<span class="nc" id="L178">        return backing;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Date getPubDate() {
+<span class="fc" id="L186">        return pubDate;</span>
+    }
+
+    /**
+     *
+     * @param pubDate
+     */
+    public void setPubDate(Date pubDate) {
+<span class="fc" id="L194">        this.pubDate = pubDate;</span>
+<span class="fc" id="L195">    }</span>
+
+    /**
+     *
+     * @return
+     */
+    public String getPublisher() {
+<span class="nc" id="L202">        return publisher;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getIsbn() {
+<span class="nc" id="L210">        return isbn;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getId() {
+<span class="fc" id="L218">        return id;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getDimensions() {
+<span class="nc" id="L226">        return dimensions;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getSubject() {
+<span class="fc" id="L234">        return subject;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Date getAvail() {
+<span class="nc" id="L242">        return avail;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Book getRelated1() {
+<span class="nc" id="L250">        return related1;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Book getRelated2() {
+<span class="nc" id="L258">        return related2;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Book getRelated3() {
+<span class="nc" id="L266">        return related3;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Book getRelated4() {
+<span class="nc" id="L274">        return related4;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Book getRelated5() {
+<span class="nc" id="L282">        return related5;</span>
+    }
+
+    /**
+     *
+     * @param related1
+     */
+    public void setRelated1(Book related1) {
+<span class="fc" id="L290">        this.related1 = related1;</span>
+<span class="fc" id="L291">    }</span>
+
+    /**
+     *
+     * @param related2
+     */
+    public void setRelated2(Book related2) {
+<span class="fc" id="L298">        this.related2 = related2;</span>
+<span class="fc" id="L299">    }</span>
+
+    /**
+     *
+     * @param related3
+     */
+    public void setRelated3(Book related3) {
+<span class="fc" id="L306">        this.related3 = related3;</span>
+<span class="fc" id="L307">    }</span>
+
+    /**
+     *
+     * @param related4
+     */
+    public void setRelated4(Book related4) {
+<span class="fc" id="L314">        this.related4 = related4;</span>
+<span class="fc" id="L315">    }</span>
+
+    /**
+     *
+     * @param related5
+     */
+    public void setRelated5(Book related5) {
+<span class="fc" id="L322">        this.related5 = related5;</span>
+<span class="fc" id="L323">    }</span>
+
+    /**
+     *
+     * @return
+     */
+    public int getStock() {
+<span class="fc" id="L330">        return stock;</span>
+    }
+
+    /**
+     *
+     * @param stock
+     */
+    public void setStock(int stock) {
+<span class="nc" id="L338">        this.stock = stock;</span>
+<span class="nc" id="L339">    }</span>
+
+    /**
+     *
+     * @param amount
+     */
+    public void addStock(int amount) {
+<span class="fc" id="L346">        stock += amount;</span>
+<span class="fc" id="L347">    }</span>
+
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">        if (o instanceof Book) {</span>
+<span class="fc" id="L352">            Book book = (Book) o;</span>
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">            return id == book.id;</span>
+        }
+<span class="nc" id="L355">        return false;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L360">        return id;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
