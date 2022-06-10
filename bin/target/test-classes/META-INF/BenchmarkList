@@ -1,0 +1,1 @@
+JMH S 28 inf300.servico.BenchmarkTest S 62 inf300.servico.jmh_generated.BenchmarkTest_bestSellers_jmhTest S 11 bestSellers S 11 AverageTime E A 1 1 1 E I 1 3 T 6 200 ms E I 1 5 T 6 200 ms E I 1 5 I 1 1 E E E E E U 12 MILLISECONDS E E 

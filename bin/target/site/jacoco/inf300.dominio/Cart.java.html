@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cart.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tarefa2-incompleta</a> &gt; <a href="index.source.html" class="el_package">inf300.dominio</a> &gt; <span class="el_source">Cart.java</span></div><h1>Cart.java</h1><pre class="source lang-java linenums">package inf300.dominio;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+
+/**
+ * *&lt;img src=&quot;./doc-files/Cart.png&quot; alt=&quot;Cart&quot;&gt;
+ */
+public class Cart implements Serializable {
+
+    private static final long serialVersionUID = -4194553499937996531L;
+
+    private final int id;
+    private Date time;
+    private HashMap&lt;Integer, CartLine&gt; linesByBookId;
+    private double aggregateCost;
+    private int aggregateQuantity;
+
+    /**
+     *
+     * @param id
+     * @param time
+     */
+<span class="fc" id="L26">    public Cart(int id, Date time) {</span>
+<span class="fc" id="L27">        this.id = id;</span>
+<span class="fc" id="L28">        this.time = time;</span>
+<span class="fc" id="L29">        clear();</span>
+<span class="fc" id="L30">    }</span>
+
+    /**
+     *
+     * @return
+     */
+    public int getId() {
+<span class="nc" id="L37">        return id;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Date getTime() {
+<span class="nc" id="L45">        return time;</span>
+    }
+
+    /**
+     *
+     * @param time
+     */
+    public void setTime(Date time) {
+<span class="fc" id="L53">        this.time = time;</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * &lt;pre&gt;
+     * linesByBookId = new HashMap&amp;lt;Integer, CartLine&amp;gt;();
+     * aggregateCost = 0;
+     * aggregateQuantity = 0;
+     * &lt;/pre&gt;
+     */
+    public void clear() {
+<span class="fc" id="L64">        linesByBookId = new HashMap&lt;Integer, CartLine&gt;();</span>
+<span class="fc" id="L65">        aggregateCost = 0;</span>
+<span class="fc" id="L66">        aggregateQuantity = 0;</span>
+<span class="fc" id="L67">    }</span>
+
+    /**
+     *
+     * @return
+     */
+    public Collection&lt;CartLine&gt; getLines() {
+<span class="fc" id="L74">        return linesByBookId.values();</span>
+    }
+
+    /**
+     * &lt;pre&gt;
+     * CartLine line = linesByBookId.get(book.getId());
+     * if (line == null) {
+     * line = new CartLine(0, book);
+     * linesByBookId.put(book.getId(), line);
+     * }
+     * aggregateCost += book.getCost() * quantity;
+     * aggregateQuantity += quantity;
+     * line.setQty(line.getQty() + quantity);
+     * if (quantity == 0) {
+     * linesByBookId.remove(book.getId());
+     * }
+     * &lt;/pre&gt;
+     *
+     * @param book
+     * @param quantity
+     */
+    public void increaseLine(Book book, int quantity) {
+<span class="fc" id="L96">        CartLine line = linesByBookId.get(book.getId());</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (line == null) {</span>
+<span class="fc" id="L98">            line = new CartLine(0, book);</span>
+<span class="fc" id="L99">            linesByBookId.put(book.getId(), line);</span>
+        }
+<span class="fc" id="L101">        aggregateCost += book.getCost() * quantity;</span>
+<span class="fc" id="L102">        aggregateQuantity += quantity;</span>
+<span class="fc" id="L103">        line.setQty(line.getQty() + quantity);</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (quantity == 0) {</span>
+<span class="nc" id="L105">            linesByBookId.remove(book.getId());</span>
+        }
+<span class="fc" id="L107">    }</span>
+
+    /**
+     * &lt;pre&gt;
+     *   CartLine line = linesByBookId.get(book.getId());
+     * if (line == null) {
+     * line = new CartLine(0, book);
+     * linesByBookId.put(book.getId(), line);
+     * }
+     * aggregateCost += book.getCost() * (quantity - line.getQty());
+     * aggregateQuantity += (quantity - line.getQty());
+     * line.setQty(quantity);
+     * if (quantity == 0) {
+     * linesByBookId.remove(book.getId());
+     * }
+     * &lt;/pre&gt;
+     *
+     * @param book
+     * @param quantity
+     */
+    public void changeLine(Book book, int quantity) {
+<span class="fc" id="L128">        CartLine line = linesByBookId.get(book.getId());</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (line == null) {</span>
+<span class="fc" id="L130">            line = new CartLine(0, book);</span>
+<span class="fc" id="L131">            linesByBookId.put(book.getId(), line);</span>
+        }
+<span class="fc" id="L133">        aggregateCost += book.getCost() * (quantity - line.getQty());</span>
+<span class="fc" id="L134">        aggregateQuantity += (quantity - line.getQty());</span>
+<span class="fc" id="L135">        line.setQty(quantity);</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (quantity == 0) {</span>
+<span class="nc" id="L137">            linesByBookId.remove(book.getId());</span>
+        }
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * &lt;pre&gt;
+     * return aggregateCost * ((100 - discount) * 0.01);
+     * &lt;/pre&gt;
+     *
+     * @param discount
+     * @return
+     */
+    public double subTotal(double discount) {
+<span class="fc" id="L150">        return aggregateCost * ((100 - discount) * 0.01);</span>
+    }
+
+    /**
+     * &lt;pre&gt;
+     * return subTotal(discount) * 0.0825;
+     * &lt;/pre&gt;
+     *
+     * @param discount
+     * @return
+     */
+    public double tax(double discount) {
+<span class="fc" id="L162">        return subTotal(discount) * 0.0825;</span>
+    }
+
+    /**
+     * &lt;pre&gt;
+     * return 3.00 + (1.00 * aggregateQuantity);
+     * &lt;/pre&gt;
+     *
+     * @return
+     */
+    public double shipCost() {
+<span class="fc" id="L173">        return 3.00 + (1.00 * aggregateQuantity);</span>
+    }
+
+    /**
+     * &lt;pre&gt;
+     * return subTotal(discount) + shipCost() + tax(discount);
+     * &lt;/pre&gt;
+     *
+     * @param discount
+     * @return
+     */
+    public double total(double discount) {
+<span class="fc" id="L185">        return subTotal(discount) + shipCost() + tax(discount);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

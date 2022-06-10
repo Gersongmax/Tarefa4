@@ -3,12 +3,14 @@ package inf300.servico;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import inf300.dominio.Address;
 import inf300.dominio.Author;
@@ -593,10 +596,57 @@ public class Bookstore implements Serializable {
      * @return
      */
     public List<Book> getBestSellers(final String subject) {
-        return null;
-    }
-    
+    	
+ HashMap<Book,Integer> sellCounter = new HashMap<Book,Integer>();
+ List<Book> books = Bookstore.getInstance().getBooksById();
+ 
+ 
+ int quantity;
 
+ for(Book book : books) {
+	 quantity = 0;
+ 
+	 if ( book.getSubject().equals(subject)) {
+		for (Order order : ordersByCreation) {
+			 if (order.getStatus().equals("SHIPPED")){				 				 
+		         for (OrderLine line : order.getLines()) {
+			       if (line.getBook().equals(book)) {
+			    	   quantity += line.getQty();
+			       }
+		         }
+			 } 
+		 }
+		 Integer value = sellCounter.get(book);
+		 if (value != null) {
+			 sellCounter.put(book, value +quantity);
+		 }else {
+			 sellCounter.put(book, quantity);
+		 }
+		 
+	 }
+ }	 
+
+LinkedHashMap<Book, Integer> sorted =
+	sellCounter.entrySet()
+		.stream()
+		.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(50)
+        .collect(Collectors.toMap(e-> e.getKey(), e-> e.getValue(),
+        		(e1, e2) -> null,
+        		() -> new LinkedHashMap<Book,Integer>()));
+     System.out.println(sorted) ;
+
+List<Book> sortedList = new ArrayList<> (sorted.keySet());
+
+System.out.println(sortedList);
+
+return sortedList;
+        
+	
+ 
+ }
+ 	
+       	
+    
     /**
      *
      * @param subject

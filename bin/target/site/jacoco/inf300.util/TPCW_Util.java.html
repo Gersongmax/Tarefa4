@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TPCW_Util.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tarefa2-incompleta</a> &gt; <a href="index.source.html" class="el_package">inf300.util</a> &gt; <span class="el_source">TPCW_Util.java</span></div><h1>TPCW_Util.java</h1><pre class="source lang-java linenums">package inf300.util;
+
+
+import java.util.*;
+
+/**
+ * *&lt;img src=&quot;./doc-files/TPCW_Util.png&quot; alt=&quot;TPCW_Util&quot;&gt;
+ */
+<span class="nc" id="L9">public class TPCW_Util {</span>
+
+<span class="fc" id="L11">    private static final String[] arrayFnames = new String[]{</span>
+        &quot;Alice&quot;, &quot;Miguel&quot;, &quot;Sophia&quot;, &quot;Arthur&quot;, &quot;Helena&quot;, &quot;Bernardo&quot;, &quot;Valentina&quot;, &quot;Heitor&quot;, &quot;Laura&quot;, &quot;Davi&quot;, &quot;Isabella&quot;, &quot;Lorenzo&quot;, &quot;Manuela&quot;, &quot;Théo&quot;, &quot;Júlia&quot;, &quot;Pedro&quot;, &quot;Heloísa&quot;, &quot;Gabriel&quot;, &quot;Luiza&quot;, &quot;Enzo&quot;, &quot;Maria&quot;, &quot;Luiza&quot;, &quot;Matheus&quot;, &quot;Lorena&quot;, &quot;Lucas&quot;, &quot;Lívia&quot;, &quot;Benjamin&quot;, &quot;Giovanna&quot;, &quot;Nicolas&quot;, &quot;Maria&quot;, &quot;Eduarda&quot;, &quot;Guilherme&quot;, &quot;Beatriz&quot;, &quot;Rafael&quot;, &quot;Maria&quot;, &quot;Clara&quot;, &quot;Joaquim&quot;, &quot;Cecília&quot;, &quot;Samuel&quot;, &quot;Eloá&quot;, &quot;Enzo&quot;, &quot;Gabriel&quot;, &quot;Lara&quot;, &quot;João&quot;, &quot;Miguel&quot;, &quot;Maria&quot;, &quot;Júlia&quot;, &quot;Henrique&quot;, &quot;Isadora&quot;, &quot;Gustavo&quot;, &quot;Mariana&quot;, &quot;Murilo&quot;, &quot;Emanuelly&quot;, &quot;Pedro&quot;, &quot;Henrique&quot;, &quot;Ana&quot;, &quot;Júlia&quot;, &quot;Pietro&quot;, &quot;Ana&quot;, &quot;Luiza&quot;, &quot;Lucca&quot;, &quot;Ana&quot;, &quot;Clara&quot;, &quot;Felipe&quot;, &quot;Melissa&quot;, &quot;João&quot;, &quot;Pedro&quot;, &quot;Yasmin&quot;, &quot;Isaac&quot;, &quot;Maria&quot;, &quot;Alice&quot;, &quot;Benício&quot;, &quot;Isabelly&quot;, &quot;Daniel&quot;, &quot;Lavínia&quot;, &quot;Anthony&quot;, &quot;Esther&quot;, &quot;Leonardo&quot;, &quot;Sarah&quot;, &quot;Davi&quot;, &quot;Lucca&quot;, &quot;Sandro&quot;, &quot;Elisa&quot;, &quot;Bryan&quot;, &quot;Antonella&quot;, &quot;Eduardo&quot;, &quot;Rafaela&quot;, &quot;João&quot;, &quot;Lucas&quot;, &quot;Maria&quot;, &quot;Cecília&quot;, &quot;Victor&quot;, &quot;Liz&quot;, &quot;João&quot;, &quot;Marina&quot;, &quot;Cauã&quot;, &quot;Nicole&quot;, &quot;Antônio&quot;, &quot;Maitê&quot;, &quot;Vicente&quot;, &quot;Isis&quot;, &quot;Caleb&quot;, &quot;Alícia&quot;, &quot;Gael&quot;, &quot;Luna&quot;, &quot;Bento&quot;, &quot;Rebeca&quot;, &quot;Caio&quot;, &quot;Agatha&quot;, &quot;Emanuel&quot;, &quot;Letícia&quot;, &quot;Vinícius&quot;, &quot;Maria-&quot;, &quot;João&quot;, &quot;Guilherme&quot;, &quot;Gabriela&quot;, &quot;Davi&quot;, &quot;Lucas&quot;, &quot;Ana&quot;, &quot;Laura&quot;, &quot;Noah&quot;, &quot;Catarina&quot;, &quot;João&quot;, &quot;Gabriel&quot;, &quot;Clara&quot;, &quot;João&quot;, &quot;Victor&quot;, &quot;Ana&quot;, &quot;Beatriz&quot;, &quot;Luiz&quot;, &quot;Miguel&quot;, &quot;Vitória&quot;, &quot;Francisco&quot;, &quot;Olívia&quot;, &quot;Kaique&quot;, &quot;Maria&quot;, &quot;Fernanda&quot;, &quot;Otávio&quot;, &quot;Emilly&quot;, &quot;Augusto&quot;, &quot;Maria&quot;, &quot;Valentina&quot;, &quot;Levi&quot;, &quot;Milena&quot;, &quot;Yuri&quot;, &quot;Maria&quot;, &quot;Helena&quot;, &quot;Enrico&quot;, &quot;Bianca&quot;, &quot;Thiago&quot;, &quot;Larissa&quot;, &quot;Ian&quot;, &quot;Mirella&quot;, &quot;Victor&quot;, &quot;Hugo&quot;, &quot;Maria&quot;, &quot;Flor&quot;, &quot;Thomas&quot;, &quot;Allana&quot;, &quot;Henry&quot;, &quot;Ana&quot;, &quot;Sophia&quot;, &quot;Luiz&quot;, &quot;Felipe&quot;, &quot;Clarice&quot;, &quot;Ryan&quot;, &quot;Pietra&quot;, &quot;Arthur&quot;, &quot;Miguel&quot;, &quot;Maria&quot;, &quot;Vitória&quot;, &quot;Davi&quot;, &quot;Luiz&quot;, &quot;Maya&quot;, &quot;Nathan&quot;, &quot;Laís&quot;, &quot;Pedro&quot;, &quot;Lucas&quot;, &quot;Ayla&quot;, &quot;Davi&quot;, &quot;Miguel&quot;, &quot;Ana&quot;, &quot;Lívia&quot;, &quot;Raul&quot;, &quot;Eduarda&quot;, &quot;Pedro&quot;, &quot;Miguel&quot;, &quot;Mariah&quot;, &quot;Luiz&quot;, &quot;Henrique&quot;, &quot;Stella&quot;, &quot;Luan&quot;, &quot;Ana&quot;, &quot;Erick&quot;, &quot;Gabrielly&quot;, &quot;Martin&quot;, &quot;Sophie&quot;, &quot;Bruno&quot;, &quot;Carolina&quot;, &quot;Rodrigo&quot;, &quot;Maria&quot;, &quot;Laura&quot;, &quot;Luiz&quot;, &quot;Gustavo&quot;, &quot;Maria&quot;, &quot;Heloísa&quot;, &quot;Arthur&quot;, &quot;Gabriel&quot;, &quot;Maria&quot;, &quot;Sophia&quot;, &quot;Breno&quot;, &quot;Fernanda&quot;, &quot;Kauê&quot;, &quot;Malu&quot;, &quot;Enzo&quot;, &quot;Miguel&quot;, &quot;Analu&quot;, &quot;Fernando&quot;, &quot;Amanda&quot;, &quot;Arthur&quot;, &quot;Henrique&quot;, &quot;Aurora&quot;, &quot;Luiz&quot;, &quot;Otávio&quot;, &quot;Maria&quot;, &quot;Isis&quot;, &quot;Carlos&quot;, &quot;Eduardo&quot;, &quot;Louise&quot;, &quot;Tomás&quot;, &quot;Heloise&quot;, &quot;Lucas&quot;, &quot;Gabriel&quot;, &quot;Ana&quot;, &quot;Vitória&quot;, &quot;André&quot;, &quot;Ana&quot;, &quot;Cecília&quot;, &quot;José&quot;, &quot;Ana&quot;, &quot;Liz&quot;, &quot;Yago&quot;, &quot;Joana&quot;, &quot;Danilo&quot;, &quot;Luana&quot;, &quot;Anthony&quot;, &quot;Gabriel&quot;, &quot;Antônia&quot;, &quot;Ruan&quot;, &quot;Isabel&quot;, &quot;Miguel&quot;, &quot;Henrique&quot;, &quot;Bruna&quot;, &quot;Oliver&quot;
+    };
+<span class="fc" id="L14">    private static final String[] arrayLnames = new String[]{</span>
+        &quot;Ferreira&quot;,
+        &quot;Braga&quot;,
+        &quot;da Silva&quot;,
+        &quot;Della Coletta&quot;,
+        &quot;Zampirolli&quot;,
+        &quot;Fernandes&quot;,
+        &quot;Alves&quot;,
+        &quot;Costalonga&quot;,
+        &quot;Botteon&quot;,
+        &quot;Caliman&quot;,
+        &quot;de Oliveira&quot;,
+        &quot;Zanette&quot;,
+        &quot;Salvador&quot;,
+        &quot;Silva&quot;,
+        &quot;Zandonadi&quot;,
+        &quot;Pesca&quot;,
+        &quot;Falqueto&quot;,
+        &quot;Tosi&quot;,
+        &quot;da Costa&quot;,
+        &quot;de Souza&quot;,
+        &quot;Gomes&quot;,
+        &quot;Calmon&quot;,
+        &quot;Pereira&quot;,
+        &quot;Sossai detto Pegorer&quot;,
+        &quot;de Almeida&quot;,
+        &quot;de Jesus&quot;,
+        &quot;Martins&quot;,
+        &quot;Balarini&quot;,
+        &quot;Rodrigues&quot;,
+        &quot;Gonçalves&quot;,
+        &quot;Pizzol&quot;,
+        &quot;Moreira&quot;,
+        &quot;Vieira&quot;,
+        &quot;Venturim&quot;,
+        &quot;Bazoni&quot;,
+        &quot;Filete&quot;,
+        &quot;Almeida&quot;,
+        &quot;Oliveira&quot;,
+        &quot;dos Santos&quot;,
+        &quot;Falchetto&quot;,
+        &quot;Barbosa&quot;,
+        &quot;Breda&quot;,
+        &quot;Scaramussa&quot;,
+        &quot;de Barros&quot;,
+        &quot;Marques&quot;};
+
+    /**
+     *
+     * @param rand
+     * @return
+     */
+    public static String getRandomLname(Random rand) {
+<span class="fc" id="L67">        final int index = getRandomInt(rand, 0, arrayLnames.length);</span>
+<span class="fc" id="L68">        return arrayLnames[0];</span>
+    }
+
+    /**
+     *
+     * @param rand
+     * @param min
+     * @param max
+     * @return
+     */
+    public static String getRandomString(Random rand, int min, int max) {
+<span class="fc" id="L79">        StringBuilder newstring = new StringBuilder();</span>
+<span class="fc" id="L80">        final char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',</span>
+            'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+            'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+            'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '@', '#',
+            '$', '%', '^', '&amp;', '*', '(', ')', '_', '-', '=', '+',
+            '{', '}', '[', ']', '|', ':', ';', ',', '.', '?', '/',
+            '~', ' '}; //79 characters
+<span class="fc" id="L88">        int strlen = getRandomInt(rand, min, max);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (int i = 0; i &lt; strlen; i++) {</span>
+<span class="fc" id="L90">            newstring.append(chars[rand.nextInt(chars.length)]);</span>
+        }
+<span class="fc" id="L92">        return newstring.toString();</span>
+    }
+
+    /**
+     *
+     * @param rand
+     * @param lower
+     * @param upper
+     * @return
+     */
+    public static int getRandomInt(Random rand, int lower, int upper) {
+<span class="fc" id="L103">        return rand.nextInt(upper - lower + 1) + lower;</span>
+    }
+
+    /**
+     *
+     * @param rand
+     * @param lower
+     * @param upper
+     * @return
+     */
+    public static long getRandomLong(Random rand, long lower, long upper) {
+<span class="fc" id="L114">        return (long) (rand.nextDouble() * (upper - lower + 1) + lower);</span>
+    }
+
+    /**
+     *
+     * @param rand
+     * @return
+     */
+    public static Date getRandomBirthdate(Random rand) {
+<span class="fc" id="L123">        return new GregorianCalendar(</span>
+<span class="fc" id="L124">                TPCW_Util.getRandomInt(rand, 1880, 2000),</span>
+<span class="fc" id="L125">                TPCW_Util.getRandomInt(rand, 0, 11),</span>
+<span class="fc" id="L126">                TPCW_Util.getRandomInt(rand, 1, 30)).getTime();</span>
+    }
+
+    /**
+     *
+     * @param rand
+     * @return
+     */
+    public static Date getRandomPublishdate(Random rand) {
+<span class="fc" id="L135">        return new GregorianCalendar(</span>
+<span class="fc" id="L136">                TPCW_Util.getRandomInt(rand, 1930, 2000),</span>
+<span class="fc" id="L137">                TPCW_Util.getRandomInt(rand, 0, 11),</span>
+<span class="fc" id="L138">                TPCW_Util.getRandomInt(rand, 1, 30)).getTime();</span>
+    }
+
+    /**
+     *
+     * @param d
+     * @param n
+     * @return
+     */
+    public static String DigSyl(int d, int n) {
+<span class="fc" id="L148">        StringBuilder resultString = new StringBuilder();</span>
+<span class="fc" id="L149">        String digits = Integer.toString(d);</span>
+
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (n &gt; digits.length()) {</span>
+<span class="nc" id="L152">            int padding = n - digits.length();</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">            for (int i = 0; i &lt; padding; i++) {</span>
+<span class="nc" id="L154">                resultString = resultString.append(&quot;BA&quot;);</span>
+            }
+        }
+
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        for (int i = 0; i &lt; digits.length(); i++) {</span>
+<span class="pc bpc" id="L159" title="1 of 11 branches missed.">            switch (digits.charAt(i)) {</span>
+                case '0':
+<span class="fc" id="L161">                    resultString = resultString.append(&quot;BA&quot;);</span>
+<span class="fc" id="L162">                    break;</span>
+                case '1':
+<span class="fc" id="L164">                    resultString = resultString.append(&quot;OG&quot;);</span>
+<span class="fc" id="L165">                    break;</span>
+                case '2':
+<span class="fc" id="L167">                    resultString = resultString.append(&quot;AL&quot;);</span>
+<span class="fc" id="L168">                    break;</span>
+                case '3':
+<span class="fc" id="L170">                    resultString = resultString.append(&quot;RI&quot;);</span>
+<span class="fc" id="L171">                    break;</span>
+                case '4':
+<span class="fc" id="L173">                    resultString = resultString.append(&quot;RE&quot;);</span>
+<span class="fc" id="L174">                    break;</span>
+                case '5':
+<span class="fc" id="L176">                    resultString = resultString.append(&quot;SE&quot;);</span>
+<span class="fc" id="L177">                    break;</span>
+                case '6':
+<span class="fc" id="L179">                    resultString = resultString.append(&quot;AT&quot;);</span>
+<span class="fc" id="L180">                    break;</span>
+                case '7':
+<span class="fc" id="L182">                    resultString = resultString.append(&quot;UL&quot;);</span>
+<span class="fc" id="L183">                    break;</span>
+                case '8':
+<span class="fc" id="L185">                    resultString = resultString.append(&quot;IN&quot;);</span>
+<span class="fc" id="L186">                    break;</span>
+                case '9':
+<span class="fc" id="L188">                    resultString = resultString.append(&quot;NG&quot;);</span>
+<span class="fc" id="L189">                    break;</span>
+                default:
+                    break;
+            }
+        }
+
+<span class="fc" id="L195">        return resultString.toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

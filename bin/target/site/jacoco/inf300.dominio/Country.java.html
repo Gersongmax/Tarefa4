@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Country.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tarefa2-incompleta</a> &gt; <a href="index.source.html" class="el_package">inf300.dominio</a> &gt; <span class="el_source">Country.java</span></div><h1>Country.java</h1><pre class="source lang-java linenums">package inf300.dominio;
+
+import java.io.Serializable;
+
+/**
+ * *&lt;img src=&quot;./doc-files/Country.png&quot; alt=&quot;Country&quot;&gt;
+ */
+public class Country implements Serializable {
+
+    private static final long serialVersionUID = 5171617014956861344L;
+
+    private final int id;
+    private final String name;
+    private final String currency;
+    private final double exchange;
+
+    /**
+     *
+     * @param id
+     * @param name
+     * @param currency
+     * @param exchange
+     */
+<span class="fc" id="L24">    public Country(int id, String name, String currency, double exchange) {</span>
+<span class="fc" id="L25">        this.id = id;</span>
+<span class="fc" id="L26">        this.name = name;</span>
+<span class="fc" id="L27">        this.currency = currency;</span>
+<span class="fc" id="L28">        this.exchange = exchange;</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     *
+     * @return
+     */
+    public int getId() {
+<span class="nc" id="L36">        return id;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getName() {
+<span class="fc" id="L44">        return name;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getCurrency() {
+<span class="nc" id="L52">        return currency;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getExchange() {
+<span class="nc" id="L60">        return exchange;</span>
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (o instanceof Country) {</span>
+<span class="fc" id="L66">            Country country = (Country) o;</span>
+<span class="fc" id="L67">            return name.equals(country.name);</span>
+        }
+<span class="nc" id="L69">        return false;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L74">        return name.hashCode();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

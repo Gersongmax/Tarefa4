@@ -2,6 +2,7 @@ package inf300.servico;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -302,6 +303,19 @@ public class BookstoreFunctionalTest {
     @Test
     public void testGetBestSellers() {
         System.out.println("testGetBestSellers");
+         
+       List<Book> books = instance.getBestSellers("ROMANCE");
+       assertTrue(books.size() <=50 );
+       
+      
+           
+          
+         
+      
+    
+      
+     
+      
         // ... 
     }
 
@@ -320,6 +334,13 @@ public class BookstoreFunctionalTest {
         assertArrayEquals(result0.toArray(), result1.toArray());
         assertArrayEquals(result0.toArray(), result2.toArray());
         assertArrayEquals(result0.toArray(), result3.toArray());
+        
+        //teste
+       
+        
+     
+    
+       
     }
 
 }

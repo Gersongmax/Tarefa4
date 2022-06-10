@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Populator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tarefa2-incompleta</a> &gt; <a href="index.source.html" class="el_package">inf300.util</a> &gt; <span class="el_source">Populator.java</span></div><h1>Populator.java</h1><pre class="source lang-java linenums">package inf300.util;
+
+import com.github.javafaker.Faker;
+import com.github.javafaker.Internet;
+import com.github.javafaker.Name;
+import com.github.javafaker.PhoneNumber;
+import inf300.dominio.Address;
+import inf300.dominio.Author;
+import inf300.dominio.Book;
+import inf300.dominio.CCTransaction;
+import inf300.dominio.Cart;
+import inf300.dominio.Country;
+import inf300.dominio.Customer;
+import inf300.servico.Bookstore;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Random;
+
+/**
+ *
+ * @author 
+ */
+public class Populator {
+
+    private final Bookstore bookstore;
+<span class="fc" id="L26">    private final Faker faker = new Faker();</span>
+
+<span class="fc" id="L28">    public Populator(Bookstore bookstore) {</span>
+<span class="fc" id="L29">        this.bookstore = bookstore;</span>
+<span class="fc" id="L30">    }</span>
+
+    /**
+     *
+     * @param seed
+     * @param now
+     * @param items
+     * @param customers
+     * @param addresses
+     * @param authors
+     * @param orders
+     * @return
+     */
+    public boolean populate(long seed, long now, int items, int customers,
+            int addresses, int authors, int orders) {
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (bookstore.isPopulated()) {</span>
+<span class="nc" id="L46">            return false;</span>
+        }
+<span class="fc" id="L48">        System.out.println(&quot;Beginning TPCW population.&quot;);</span>
+<span class="fc" id="L49">        Random rand = new Random(seed);</span>
+<span class="fc" id="L50">        populateCountries();</span>
+<span class="fc" id="L51">        populateAddresses(addresses, rand);</span>
+<span class="fc" id="L52">        populateCustomers(customers, rand, now);</span>
+<span class="fc" id="L53">        populateAuthorTable(authors, rand);</span>
+<span class="fc" id="L54">        populateBooks(items, rand);</span>
+<span class="fc" id="L55">        populateOrders(orders, rand, now);</span>
+<span class="fc" id="L56">        bookstore.setPopulated(true);</span>
+<span class="fc" id="L57">        System.out.println(&quot;Finished TPCW population.&quot;);</span>
+<span class="fc" id="L58">        return true;</span>
+    }
+
+    private void populateCountries() {
+<span class="fc" id="L62">        String[] countries = {&quot;United States&quot;, &quot;United Kingdom&quot;, &quot;Canada&quot;,</span>
+            &quot;Germany&quot;, &quot;France&quot;, &quot;Japan&quot;, &quot;Netherlands&quot;,
+            &quot;Italy&quot;, &quot;Switzerland&quot;, &quot;Australia&quot;, &quot;Algeria&quot;,
+            &quot;Argentina&quot;, &quot;Armenia&quot;, &quot;Austria&quot;, &quot;Azerbaijan&quot;,
+            &quot;Bahamas&quot;, &quot;Bahrain&quot;, &quot;Bangla Desh&quot;, &quot;Barbados&quot;,
+            &quot;Belarus&quot;, &quot;Belgium&quot;, &quot;Bermuda&quot;, &quot;Bolivia&quot;,
+            &quot;Botswana&quot;, &quot;Brazil&quot;, &quot;Bulgaria&quot;, &quot;Cayman Islands&quot;,
+            &quot;Chad&quot;, &quot;Chile&quot;, &quot;China&quot;, &quot;Christmas Island&quot;,
+            &quot;Colombia&quot;, &quot;Croatia&quot;, &quot;Cuba&quot;, &quot;Cyprus&quot;,
+            &quot;Czech Republic&quot;, &quot;Denmark&quot;, &quot;Dominican Republic&quot;,
+            &quot;Eastern Caribbean&quot;, &quot;Ecuador&quot;, &quot;Egypt&quot;,
+            &quot;El Salvador&quot;, &quot;Estonia&quot;, &quot;Ethiopia&quot;,
+            &quot;Falkland Island&quot;, &quot;Faroe Island&quot;, &quot;Fiji&quot;,
+            &quot;Finland&quot;, &quot;Gabon&quot;, &quot;Gibraltar&quot;, &quot;Greece&quot;, &quot;Guam&quot;,
+            &quot;Hong Kong&quot;, &quot;Hungary&quot;, &quot;Iceland&quot;, &quot;India&quot;,
+            &quot;Indonesia&quot;, &quot;Iran&quot;, &quot;Iraq&quot;, &quot;Ireland&quot;, &quot;Israel&quot;,
+            &quot;Jamaica&quot;, &quot;Jordan&quot;, &quot;Kazakhstan&quot;, &quot;Kuwait&quot;,
+            &quot;Lebanon&quot;, &quot;Luxembourg&quot;, &quot;Malaysia&quot;, &quot;Mexico&quot;,
+            &quot;Mauritius&quot;, &quot;New Zealand&quot;, &quot;Norway&quot;, &quot;Pakistan&quot;,
+            &quot;Philippines&quot;, &quot;Poland&quot;, &quot;Portugal&quot;, &quot;Romania&quot;,
+            &quot;Russia&quot;, &quot;Saudi Arabia&quot;, &quot;Singapore&quot;, &quot;Slovakia&quot;,
+            &quot;South Africa&quot;, &quot;South Korea&quot;, &quot;Spain&quot;, &quot;Sudan&quot;,
+            &quot;Sweden&quot;, &quot;Taiwan&quot;, &quot;Thailand&quot;, &quot;Trinidad&quot;,
+            &quot;Turkey&quot;, &quot;Venezuela&quot;, &quot;Zambia&quot;};
+
+<span class="fc" id="L87">        double[] exchanges = {1, .625461, 1.46712, 1.86125, 6.24238, 121.907,</span>
+            2.09715, 1842.64, 1.51645, 1.54208, 65.3851,
+            0.998, 540.92, 13.0949, 3977, 1, .3757,
+            48.65, 2, 248000, 38.3892, 1, 5.74, 4.7304,
+            1.71, 1846, .8282, 627.1999, 494.2, 8.278,
+            1.5391, 1677, 7.3044, 23, .543, 36.0127,
+            7.0707, 15.8, 2.7, 9600, 3.33771, 8.7,
+            14.9912, 7.7, .6255, 7.124, 1.9724, 5.65822,
+            627.1999, .6255, 309.214, 1, 7.75473, 237.23,
+            74.147, 42.75, 8100, 3000, .3083, .749481,
+            4.12, 37.4, 0.708, 150, .3062, 1502, 38.3892,
+            3.8, 9.6287, 25.245, 1.87539, 7.83101,
+            52, 37.8501, 3.9525, 190.788, 15180.2,
+            24.43, 3.7501, 1.72929, 43.9642, 6.25845,
+            1190.15, 158.34, 5.282, 8.54477, 32.77, 37.1414,
+            6.1764, 401500, 596, 2447.7};
+
+<span class="fc" id="L104">        String[] currencies = {&quot;Dollars&quot;, &quot;Pounds&quot;, &quot;Dollars&quot;, &quot;Deutsche Marks&quot;,</span>
+            &quot;Francs&quot;, &quot;Yen&quot;, &quot;Guilders&quot;, &quot;Lira&quot;, &quot;Francs&quot;,
+            &quot;Dollars&quot;, &quot;Dinars&quot;, &quot;Pesos&quot;, &quot;Dram&quot;,
+            &quot;Schillings&quot;, &quot;Manat&quot;, &quot;Dollars&quot;, &quot;Dinar&quot;, &quot;Taka&quot;,
+            &quot;Dollars&quot;, &quot;Rouble&quot;, &quot;Francs&quot;, &quot;Dollars&quot;,
+            &quot;Boliviano&quot;, &quot;Pula&quot;, &quot;Real&quot;, &quot;Lev&quot;, &quot;Dollars&quot;,
+            &quot;Franc&quot;, &quot;Pesos&quot;, &quot;Yuan Renmimbi&quot;, &quot;Dollars&quot;,
+            &quot;Pesos&quot;, &quot;Kuna&quot;, &quot;Pesos&quot;, &quot;Pounds&quot;, &quot;Koruna&quot;,
+            &quot;Kroner&quot;, &quot;Pesos&quot;, &quot;Dollars&quot;, &quot;Sucre&quot;, &quot;Pounds&quot;,
+            &quot;Colon&quot;, &quot;Kroon&quot;, &quot;Birr&quot;, &quot;Pound&quot;, &quot;Krone&quot;,
+            &quot;Dollars&quot;, &quot;Markka&quot;, &quot;Franc&quot;, &quot;Pound&quot;, &quot;Drachmas&quot;,
+            &quot;Dollars&quot;, &quot;Dollars&quot;, &quot;Forint&quot;, &quot;Krona&quot;, &quot;Rupees&quot;,
+            &quot;Rupiah&quot;, &quot;Rial&quot;, &quot;Dinar&quot;, &quot;Punt&quot;, &quot;Shekels&quot;,
+            &quot;Dollars&quot;, &quot;Dinar&quot;, &quot;Tenge&quot;, &quot;Dinar&quot;, &quot;Pounds&quot;,
+            &quot;Francs&quot;, &quot;Ringgit&quot;, &quot;Pesos&quot;, &quot;Rupees&quot;, &quot;Dollars&quot;,
+            &quot;Kroner&quot;, &quot;Rupees&quot;, &quot;Pesos&quot;, &quot;Zloty&quot;, &quot;Escudo&quot;,
+            &quot;Leu&quot;, &quot;Rubles&quot;, &quot;Riyal&quot;, &quot;Dollars&quot;, &quot;Koruna&quot;,
+            &quot;Rand&quot;, &quot;Won&quot;, &quot;Pesetas&quot;, &quot;Dinar&quot;, &quot;Krona&quot;,
+            &quot;Dollars&quot;, &quot;Baht&quot;, &quot;Dollars&quot;, &quot;Lira&quot;, &quot;Bolivar&quot;,
+            &quot;Kwacha&quot;};
+
+<span class="fc" id="L125">        System.out.print(&quot;Creating &quot; + countries.length + &quot; countries...&quot;);</span>
+
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (int i = 0; i &lt; countries.length; i++) {</span>
+<span class="fc" id="L128">            bookstore.createCountry(countries[i], currencies[i], exchanges[i]);</span>
+        }
+
+<span class="fc" id="L131">        System.out.println(&quot; Done&quot;);</span>
+<span class="fc" id="L132">    }</span>
+
+    private void populateAddresses(int number, Random rand) {
+<span class="fc" id="L135">        System.out.print(&quot;Creating &quot; + number + &quot; addresses...&quot;);</span>
+
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        for (int i = 0; i &lt; number; i++) {</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">            if (i % 10000 == 0) {</span>
+<span class="fc" id="L139">                System.out.print(&quot;.&quot;);</span>
+            }
+
+<span class="fc" id="L142">            final com.github.javafaker.Address fa = faker.address();</span>
+<span class="fc" id="L143">            final String street1 = fa.streetAddress();</span>
+<span class="fc" id="L144">            final String street2 = fa.streetAddress(true);</span>
+<span class="fc" id="L145">            final String city = fa.cityName();</span>
+<span class="fc" id="L146">            final String state = fa.state();</span>
+<span class="fc" id="L147">            final String zip = fa.zipCode();</span>
+<span class="fc" id="L148">            final String latitude = fa.latitude();</span>
+<span class="fc" id="L149">            final String longitude = fa.longitude();</span>
+<span class="fc" id="L150">            final String buildingNumber = fa.buildingNumber();</span>
+            
+<span class="fc" id="L152">            Country country = bookstore.getCountryByName(fa.country());</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">            if(country == null){</span>
+<span class="fc" id="L154">                country = bookstore.getACountryAnyCountry(rand);</span>
+            }
+<span class="fc" id="L156">            bookstore.createAddress(street1, street2,</span>
+                    city, state, zip, country, latitude,longitude, buildingNumber);
+        }
+
+<span class="fc" id="L160">        System.out.println(&quot; Done&quot;);</span>
+<span class="fc" id="L161">    }</span>
+
+    private void populateCustomers(int number, Random rand, long now) {
+<span class="fc" id="L164">        System.out.print(&quot;Creating &quot; + number + &quot; customers...&quot;);</span>
+
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        for (int i = 0; i &lt; number; i++) {</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">            if (i % 10000 == 0) {</span>
+<span class="fc" id="L168">                System.out.print(&quot;.&quot;);</span>
+            }
+
+<span class="fc" id="L171">            final Name name = faker.name();</span>
+<span class="fc" id="L172">            final PhoneNumber phoneNumber = faker.phoneNumber();</span>
+<span class="fc" id="L173">            final Internet internet = faker.internet();</span>
+            //
+<span class="fc" id="L175">            final String fname = name.firstName();</span>
+<span class="fc" id="L176">            final String lname = name.lastName();</span>
+<span class="fc" id="L177">            final Address address = bookstore.getAnAddressAnyAddress(rand);</span>
+<span class="fc" id="L178">            final String phone = phoneNumber.phoneNumber();</span>
+<span class="fc" id="L179">            final String email = internet.emailAddress();</span>
+<span class="fc" id="L180">            final Date since = new Date(now - TPCW_Util.getRandomInt(rand, 1, 730) * 86400000 /* a day */);</span>
+<span class="fc" id="L181">            final Date lastVisit = new Date(now - TPCW_Util.getRandomInt(rand, 1, 730) * 86400000 + TPCW_Util.getRandomInt(rand, 0, 60) * 86400000 /* a day */);</span>
+<span class="fc" id="L182">            final Date login = new Date(now);</span>
+<span class="fc" id="L183">            final Date expiration = new Date(now + 7200000 /* 2 hours */);</span>
+<span class="fc" id="L184">            final double discount = rand.nextInt(51);</span>
+<span class="fc" id="L185">            final Date birthdate = TPCW_Util.getRandomBirthdate(rand);</span>
+<span class="fc" id="L186">            final String data = TPCW_Util.getRandomString(rand, 100, 500);</span>
+
+<span class="fc" id="L188">            bookstore.createCustomer(fname, lname, address,</span>
+                    phone, email, since, lastVisit,
+                    login, expiration, discount, birthdate,
+                    data);
+        }
+
+<span class="fc" id="L194">        System.out.println(&quot; Done&quot;);</span>
+<span class="fc" id="L195">    }</span>
+
+    private void populateAuthorTable(int number, Random rand) {
+<span class="fc" id="L198">        System.out.print(&quot;Creating &quot; + number + &quot; authors...&quot;);</span>
+
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        for (int i = 0; i &lt; number; i++) {</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">            if (i % 10000 == 0) {</span>
+<span class="fc" id="L202">                System.out.print(&quot;.&quot;);</span>
+            }
+<span class="fc" id="L204">            final String fname = TPCW_Util.getRandomString(rand, 3, 20);</span>
+<span class="fc" id="L205">            final String mname = TPCW_Util.getRandomString(rand, 1, 20);</span>
+<span class="fc" id="L206">            final String lname = TPCW_Util.getRandomLname(rand);</span>
+<span class="fc" id="L207">            final Date birthdate = TPCW_Util.getRandomBirthdate(rand);</span>
+<span class="fc" id="L208">            final String bio = TPCW_Util.getRandomString(rand, 125, 500);</span>
+<span class="fc" id="L209">            bookstore.createAuthor(fname, mname, lname,</span>
+                    birthdate, bio);
+        }
+
+<span class="fc" id="L213">        System.out.println(&quot; Done&quot;);</span>
+<span class="fc" id="L214">    }</span>
+
+    private void populateBooks(int number, Random rand) {
+<span class="fc" id="L217">        String[] SUBJECTS = {&quot;ARTS&quot;, &quot;BIOGRAPHIES&quot;, &quot;BUSINESS&quot;, &quot;CHILDREN&quot;,</span>
+            &quot;COMPUTERS&quot;, &quot;COOKING&quot;, &quot;HEALTH&quot;, &quot;HISTORY&quot;,
+            &quot;HOME&quot;, &quot;HUMOR&quot;, &quot;LITERATURE&quot;, &quot;MYSTERY&quot;,
+            &quot;NON-FICTION&quot;, &quot;PARENTING&quot;, &quot;POLITICS&quot;,
+            &quot;REFERENCE&quot;, &quot;RELIGION&quot;, &quot;ROMANCE&quot;,
+            &quot;SELF-HELP&quot;, &quot;SCIENCE-NATURE&quot;, &quot;SCIENCE_FICTION&quot;,
+            &quot;SPORTS&quot;, &quot;YOUTH&quot;, &quot;TRAVEL&quot;};
+<span class="fc" id="L224">        String[] BACKINGS = {&quot;HARDBACK&quot;, &quot;PAPERBACK&quot;, &quot;USED&quot;, &quot;AUDIO&quot;,</span>
+            &quot;LIMITED-EDITION&quot;};
+
+<span class="fc" id="L227">        System.out.print(&quot;Creating &quot; + number + &quot; books...&quot;);</span>
+
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        for (int i = 0; i &lt; number; i++) {</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">            if (i % 10000 == 0) {</span>
+<span class="fc" id="L231">                System.out.print(&quot;.&quot;);</span>
+            }
+
+<span class="fc" id="L234">            final com.github.javafaker.Book fbook = faker.book();</span>
+<span class="fc" id="L235">            final String title = fbook.title();</span>
+<span class="fc" id="L236">            final Date pubDate = TPCW_Util.getRandomPublishdate(rand);</span>
+<span class="fc" id="L237">            final String publisher = fbook.publisher();</span>
+<span class="fc" id="L238">            final String subject = SUBJECTS[rand.nextInt(SUBJECTS.length)];</span>
+<span class="fc" id="L239">            final String desc = TPCW_Util.getRandomString(rand, 100, 500);</span>
+<span class="fc" id="L240">            final String thumbnail = &quot;img&quot; + i % 100 + &quot;/thumb_&quot; + i + &quot;.gif&quot;;</span>
+<span class="fc" id="L241">            final String image = &quot;img&quot; + i % 100 + &quot;/image_&quot; + i + &quot;.gif&quot;;</span>
+<span class="fc" id="L242">            final double srp = TPCW_Util.getRandomInt(rand, 100, 99999) / 100.0;</span>
+<span class="fc" id="L243">            final double cost = srp * TPCW_Util.getRandomInt(rand, 50, 100) / 100.0;</span>
+<span class="fc" id="L244">            final Date avail = new Date(pubDate.getTime()</span>
+<span class="fc" id="L245">                    + TPCW_Util.getRandomInt(rand, 1, 30) * 86400000 /* a day */);</span>
+<span class="fc" id="L246">            final String isbn = TPCW_Util.getRandomString(rand, 13, 13);</span>
+<span class="fc" id="L247">            final int page = TPCW_Util.getRandomInt(rand, 20, 9999);</span>
+<span class="fc" id="L248">            final String backing = BACKINGS[rand.nextInt(BACKINGS.length)];</span>
+<span class="fc" id="L249">            final String dimensions = (TPCW_Util.getRandomInt(rand, 1, 9999) / 100.0) + &quot;x&quot;</span>
+<span class="fc" id="L250">                    + (TPCW_Util.getRandomInt(rand, 1, 9999) / 100.0) + &quot;x&quot;</span>
+<span class="fc" id="L251">                    + (TPCW_Util.getRandomInt(rand, 1, 9999) / 100.0);</span>
+<span class="fc" id="L252">            final Author author = bookstore.getAnAuthorAnyAuthor(rand);</span>
+<span class="fc" id="L253">            final int stock = TPCW_Util.getRandomInt(rand, 10, 30);</span>
+<span class="fc" id="L254">            bookstore.createBook(title, pubDate, publisher,</span>
+                    subject, desc, thumbnail,
+                    image, srp, cost, avail, isbn,
+                    page, backing, dimensions, author,
+                    stock);
+        }
+
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        for (int i = 0; i &lt; number; i++) {</span>
+<span class="fc" id="L262">            Book book = bookstore.getBooksById().get(i);</span>
+<span class="fc" id="L263">            HashSet&lt;Book&gt; related = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">            while (related.size() &lt; 5) {</span>
+<span class="fc" id="L265">                Book relatedBook = bookstore.getABookAnyBook(rand);</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">                if (relatedBook.getId() != i) {</span>
+<span class="fc" id="L267">                    related.add(relatedBook);</span>
+                }
+<span class="fc" id="L269">            }</span>
+<span class="fc" id="L270">            Book[] relatedArray = new Book[]{bookstore.getBooksById().get(TPCW_Util.getRandomInt(rand, 0, number - 1)),</span>
+<span class="fc" id="L271">                bookstore.getBooksById().get(TPCW_Util.getRandomInt(rand, 0, number - 1)),</span>
+<span class="fc" id="L272">                bookstore.getBooksById().get(TPCW_Util.getRandomInt(rand, 0, number - 1)),</span>
+<span class="fc" id="L273">                bookstore.getBooksById().get(TPCW_Util.getRandomInt(rand, 0, number - 1)),</span>
+<span class="fc" id="L274">                bookstore.getBooksById().get(TPCW_Util.getRandomInt(rand, 0, number - 1))};</span>
+<span class="fc" id="L275">            relatedArray = related.toArray(relatedArray);</span>
+<span class="fc" id="L276">            book.setRelated1(relatedArray[0]);</span>
+<span class="fc" id="L277">            book.setRelated2(relatedArray[1]);</span>
+<span class="fc" id="L278">            book.setRelated3(relatedArray[2]);</span>
+<span class="fc" id="L279">            book.setRelated4(relatedArray[3]);</span>
+<span class="fc" id="L280">            book.setRelated5(relatedArray[4]);</span>
+        }
+
+<span class="fc" id="L283">        System.out.println(&quot; Done&quot;);</span>
+<span class="fc" id="L284">    }</span>
+
+    void populateOrders(int number, Random rand, long now) {
+<span class="fc" id="L287">        String[] credit_cards = {&quot;VISA&quot;, &quot;MASTERCARD&quot;, &quot;DISCOVER&quot;,</span>
+            &quot;AMEX&quot;, &quot;DINERS&quot;};
+<span class="fc" id="L289">        String[] ship_types = {&quot;AIR&quot;, &quot;UPS&quot;, &quot;FEDEX&quot;, &quot;SHIP&quot;, &quot;COURIER&quot;,</span>
+            &quot;MAIL&quot;};
+<span class="fc" id="L291">        String[] status_types = {&quot;PROCESSING&quot;, &quot;SHIPPED&quot;, &quot;PENDING&quot;,</span>
+            &quot;DENIED&quot;, &quot;CANCELED&quot;};
+
+<span class="fc" id="L294">        System.out.print(&quot;Creating &quot; + number + &quot; orders...&quot;);</span>
+
+<span class="fc bfc" id="L296" title="All 2 branches covered.">        for (int i = 0; i &lt; number; i++) {</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">            if (i % 10000 == 0) {</span>
+<span class="fc" id="L298">                System.out.print(&quot;.&quot;);</span>
+            }
+<span class="fc" id="L300">            int nBooks = TPCW_Util.getRandomInt(rand, 1, 5);</span>
+<span class="fc" id="L301">            Cart cart = new Cart(-1, null);</span>
+<span class="fc" id="L302">            String comment = TPCW_Util.getRandomString(rand, 20, 100);</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">            for (int j = 0; j &lt; nBooks; j++) {</span>
+<span class="fc" id="L304">                Book book = bookstore.getABookAnyBook(rand);</span>
+<span class="fc" id="L305">                int quantity = TPCW_Util.getRandomInt(rand, 1, 300);</span>
+<span class="fc" id="L306">                cart.changeLine(book, quantity);</span>
+            }
+
+<span class="fc" id="L309">            Customer customer = bookstore.getACustomerAnyCustomer(rand);</span>
+<span class="fc" id="L310">            CCTransaction ccTransact = new CCTransaction(</span>
+<span class="fc" id="L311">                    credit_cards[rand.nextInt(credit_cards.length)],</span>
+<span class="fc" id="L312">                    TPCW_Util.getRandomLong(rand, 1000000000000000L, 9999999999999999L),</span>
+<span class="fc" id="L313">                    TPCW_Util.getRandomString(rand, 14, 30),</span>
+<span class="fc" id="L314">                    new Date(now + TPCW_Util.getRandomInt(rand, 10, 730) * 86400000 /* a day */),</span>
+<span class="fc" id="L315">                    TPCW_Util.getRandomString(rand, 15, 15),</span>
+<span class="fc" id="L316">                    cart.total(customer.getDiscount()),</span>
+                    new Date(now),
+<span class="fc" id="L318">                    bookstore.getACountryAnyCountry(rand));</span>
+<span class="fc" id="L319">            long orderDate = now - TPCW_Util.getRandomInt(rand, 53, 60) * 86400000 /* a day */;</span>
+<span class="fc" id="L320">            long shipDate = orderDate + TPCW_Util.getRandomInt(rand, 0, 7) * 86400000 /* a day */;</span>
+<span class="fc" id="L321">            bookstore.createOrder(</span>
+                    customer,
+                    new Date(orderDate),
+                    cart, comment,
+<span class="fc" id="L325">                    ship_types[rand.nextInt(ship_types.length)],</span>
+                    new Date(shipDate),
+<span class="fc" id="L327">                    status_types[rand.nextInt(status_types.length)],</span>
+<span class="fc" id="L328">                    bookstore.getAnAddressAnyAddress(rand),</span>
+<span class="fc" id="L329">                    bookstore.getAnAddressAnyAddress(rand),</span>
+                    ccTransact);
+        }
+
+<span class="fc" id="L333">        System.out.println(&quot; Done&quot;);</span>
+<span class="fc" id="L334">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
