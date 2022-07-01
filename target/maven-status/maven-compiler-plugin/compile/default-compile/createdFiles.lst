@@ -3,13 +3,17 @@ inf300\servico\Bookstore$1.class
 inf300\util\Populator.class
 inf300\dominio\Cart.class
 inf300\dominio\CartLine.class
+inf300\control\BookController$CounterTO.class
 inf300\dominio\OrderLine.class
 inf300\dominio\Country.class
 inf300\dominio\Order.class
+inf300\control\BookController.class
+inf300\control\BookController$BookTO.class
 inf300\util\TPCW_Util.class
 inf300\dominio\CCTransaction.class
 inf300\dominio\Book.class
 inf300\dominio\Address.class
 inf300\servico\Bookstore.class
 inf300\dominio\Author.class
+inf300\JAXRSConfiguration.class
 inf300\servico\Bookstore$Counter.class

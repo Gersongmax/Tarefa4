@@ -1,2 +1,2 @@
 "Benchmark","Mode","Threads","Samples","Score","Score Error (99,9%)","Unit"
-"inf300.servico.BenchmarkTest.bestSellers","avgt",1,25,"0,000479","0,000004","ms/op"
+"inf300.servico.BenchmarkTest.bestSellers","avgt",1,25,"235,199074","23,567175","ms/op"

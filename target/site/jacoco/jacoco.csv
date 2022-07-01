@@ -2,9 +2,16 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 tarefa2-incompleta,inf300.util,Populator,2,2195,1,33,1,157,1,24,0,8
 tarefa2-incompleta,inf300.util,TPCW_Util,19,1694,4,15,4,46,4,19,1,8
 tarefa2-incompleta,inf300.servico,Bookstore.Counter,15,0,0,0,6,0,3,0,3,0
-tarefa2-incompleta,inf300.servico,Bookstore,161,1284,35,71,33,252,35,83,7,58
+tarefa2-incompleta,inf300.servico,Bookstore,153,1292,36,66,32,240,37,81,8,59
 tarefa2-incompleta,inf300.servico,Bookstore.new Comparator() {...},0,22,0,2,0,5,0,3,0,2
-tarefa2-incompleta,inf300.dominio,Book,45,157,1,3,16,57,15,23,14,22
+tarefa2-incompleta,inf300.control,BuyController.OrderTO,45,0,0,0,20,0,13,0,13,0
+tarefa2-incompleta,inf300.control,BookController.BookTO,39,0,0,0,16,0,8,0,8,0
+tarefa2-incompleta,inf300.control,BuyController.CartTO,30,0,0,0,15,0,9,0,9,0
+tarefa2-incompleta,inf300.control,BuyController,17,0,0,0,8,0,8,0,8,0
+tarefa2-incompleta,inf300.control,BookController.CounterTO,19,0,0,0,8,0,4,0,4,0
+tarefa2-incompleta,inf300.control,BookController,27,0,0,0,9,0,5,0,5,0
+tarefa2-incompleta,inf300.control,BuyController.BuyTO,73,0,0,0,32,0,21,0,21,0
+tarefa2-incompleta,inf300.dominio,Book,46,156,2,2,16,57,16,22,14,22
 tarefa2-incompleta,inf300.dominio,CCTransaction,24,27,0,0,8,10,8,1,8,1
 tarefa2-incompleta,inf300.dominio,OrderLine,6,21,0,0,2,8,2,3,2,3
 tarefa2-incompleta,inf300.dominio,Address,30,105,7,7,10,23,16,4,9,4
@@ -14,3 +21,4 @@ tarefa2-incompleta,inf300.dominio,Customer,247,221,21,21,53,57,33,13,12,13
 tarefa2-incompleta,inf300.dominio,Author,12,21,0,0,4,8,4,2,4,2
 tarefa2-incompleta,inf300.dominio,CartLine,0,19,0,0,0,8,0,4,0,4
 tarefa2-incompleta,inf300.dominio,Order,27,97,0,2,9,26,9,7,9,6
+tarefa2-incompleta,inf300,JAXRSConfiguration,3,0,0,0,1,0,1,0,1,0

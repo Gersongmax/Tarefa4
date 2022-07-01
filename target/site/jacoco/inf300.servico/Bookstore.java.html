@@ -14,10 +14,13 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import inf300.dominio.Address;
@@ -37,833 +40,837 @@ import inf300.util.TPCW_Util;
  */
 public class Bookstore implements Serializable {
 
-    private static final long serialVersionUID = -3099048826035606338L;
-    private static Bookstore instance;
+	private static final long serialVersionUID = -3099048826035606338L;
+	private static Bookstore instance;
 
-    private boolean populated;
-    private final List&lt;Country&gt; countryById;
-    private final Map&lt;String, Country&gt; countryByName;
-    private final List&lt;Address&gt; addressById;
-    private final Map&lt;Address, Address&gt; addressByAll;
-    private final List&lt;Customer&gt; customersById;
-    private final Map&lt;String, Customer&gt; customersByUsername;
-    private final List&lt;Author&gt; authorsById;
-    private final List&lt;Book&gt; booksById;
-    private final List&lt;Cart&gt; cartsById;
-    private final List&lt;Order&gt; ordersById;
-    private final LinkedList&lt;Order&gt; ordersByCreation;
+	private boolean populated;
+	private final List&lt;Country&gt; countryById;
+	private final Map&lt;String, Country&gt; countryByName;
+	private final List&lt;Address&gt; addressById;
+	private final Map&lt;Address, Address&gt; addressByAll;
+	private final List&lt;Customer&gt; customersById;
+	private final Map&lt;String, Customer&gt; customersByUsername;
+	private final List&lt;Author&gt; authorsById;
+	private final List&lt;Book&gt; booksById;
+	private final List&lt;Cart&gt; cartsById;
+	private final List&lt;Order&gt; ordersById;
+	private final LinkedList&lt;Order&gt; ordersByCreation;
 
-    /**
-     * &lt;pre&gt;
-     *         populated = false;
-     *         countryById = new ArrayList&amp;lt;&amp;gt;();
-     *         countryByName = new HashMap&amp;lt;&amp;gt;();
-     *         addressById = new ArrayList&amp;lt;&amp;gt;();
-     *         addressByAll = new HashMap&amp;lt;&amp;gt;();
-     *         customersById = new ArrayList&amp;lt;&amp;gt;();
-     *         customersByUsername = new HashMap&amp;lt;&amp;gt;();
-     *         authorsById = new ArrayList&amp;lt;&amp;gt;();
-     *         booksById = new ArrayList&amp;lt;&amp;gt;();
-     *         cartsById = new ArrayList&amp;lt;&amp;gt;();
-     *         ordersById = new ArrayList&amp;lt;&amp;gt;();
-     *         ordersByCreation = new LinkedList&amp;lt;&amp;gt;();
-     * &lt;/pre&gt;
-     */
-<span class="fc" id="L72">    private Bookstore() {</span>
-<span class="fc" id="L73">        countryById = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L74">        countryByName = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L75">        addressById = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L76">        addressByAll = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L77">        customersById = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L78">        customersByUsername = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L79">        authorsById = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L80">        booksById = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L81">        cartsById = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L82">        ordersById = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L83">        ordersByCreation = new LinkedList&lt;&gt;();</span>
+	/**
+	 * &lt;pre&gt;
+	 * populated = false;
+	 * countryById = new ArrayList&amp;lt;&amp;gt;();
+	 * countryByName = new HashMap&amp;lt;&amp;gt;();
+	 * addressById = new ArrayList&amp;lt;&amp;gt;();
+	 * addressByAll = new HashMap&amp;lt;&amp;gt;();
+	 * customersById = new ArrayList&amp;lt;&amp;gt;();
+	 * customersByUsername = new HashMap&amp;lt;&amp;gt;();
+	 * authorsById = new ArrayList&amp;lt;&amp;gt;();
+	 * booksById = new ArrayList&amp;lt;&amp;gt;();
+	 * cartsById = new ArrayList&amp;lt;&amp;gt;();
+	 * ordersById = new ArrayList&amp;lt;&amp;gt;();
+	 * ordersByCreation = new LinkedList&amp;lt;&amp;gt;();
+	 * &lt;/pre&gt;
+	 */
+<span class="fc" id="L75">	private Bookstore() {</span>
+<span class="fc" id="L76">		countryById = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L77">		countryByName = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L78">		addressById = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L79">		addressByAll = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L80">		customersById = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L81">		customersByUsername = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L82">		authorsById = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L83">		booksById = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L84">		cartsById = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L85">		ordersById = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L86">		ordersByCreation = new LinkedList&lt;&gt;();</span>
 
-<span class="fc" id="L85">    }</span>
+<span class="fc" id="L88">	}</span>
 
-    public synchronized static Bookstore getInstance() {
-<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (instance == null) {</span>
-<span class="fc" id="L89">            instance = new Bookstore();</span>
-        }
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (!instance.populated) {</span>
-<span class="fc" id="L92">            long seed = 0;</span>
-<span class="fc" id="L93">            long now = System.currentTimeMillis();</span>
-<span class="fc" id="L94">            int items = 100000;</span>
-<span class="fc" id="L95">            int customers = 1000;</span>
-<span class="fc" id="L96">            int addresses = 1000;</span>
-<span class="fc" id="L97">            int authors = 100;</span>
-<span class="fc" id="L98">            int orders = 100000;</span>
-<span class="fc" id="L99">            new Populator(instance).populate(seed, now, items, customers, addresses, authors, orders);</span>
-<span class="fc" id="L100">            instance.populated = true;</span>
-        }
-<span class="fc" id="L102">        return instance;</span>
-    }
+	public synchronized static Bookstore getInstance() {
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (instance == null) {</span>
+<span class="fc" id="L92">			instance = new Bookstore();</span>
+		}
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">		if (!instance.populated) {</span>
+<span class="fc" id="L95">			long seed = 0;</span>
+<span class="fc" id="L96">			long now = System.currentTimeMillis();</span>
+<span class="fc" id="L97">			int items = 100000;</span>
+<span class="fc" id="L98">			int customers = 1000;</span>
+<span class="fc" id="L99">			int addresses = 1000;</span>
+<span class="fc" id="L100">			int authors = 100;</span>
+<span class="fc" id="L101">			int orders = 100000;</span>
+<span class="fc" id="L102">			new Populator(instance).populate(seed, now, items, customers, addresses, authors, orders);</span>
+<span class="fc" id="L103">			instance.populated = true;</span>
+		}
+<span class="fc" id="L105">		return instance;</span>
+	}
 
-    public List&lt;Book&gt; getBooksById() {
-<span class="fc" id="L106">        return booksById;</span>
-    }
+	public List&lt;Book&gt; getBooksById() {
+<span class="fc" id="L109">		return booksById;</span>
+	}
 
-    /**
-     *
-     * @return
-     */
-    public boolean isPopulated() {
-<span class="fc" id="L114">        return populated;</span>
-    }
+	/**
+	 *
+	 * @return
+	 */
+	public boolean isPopulated() {
+<span class="fc" id="L117">		return populated;</span>
+	}
 
-    public void setPopulated(boolean populated) {
-<span class="fc" id="L118">        this.populated = populated;</span>
-<span class="fc" id="L119">    }</span>
+	public void setPopulated(boolean populated) {
+<span class="fc" id="L121">		this.populated = populated;</span>
+<span class="fc" id="L122">	}</span>
 
-    /**
-     * &lt;pre&gt;
-     *         Country country = countryByName.get(name);
-     *         if (country == null) {
-     *             country = createCountry(name, &quot;&quot;, 0);
-     *         }
-     *         return country;
-     * &lt;/pre&gt;
-     *
-     * @param name
-     * @return
-     */
-    private Country alwaysGetCountry(String name) {
-<span class="fc" id="L134">        Country country = countryByName.get(name);</span>
-<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (country == null) {</span>
-<span class="fc" id="L136">            country = createCountry(name, &quot;&quot;, 0);</span>
-        }
-<span class="fc" id="L138">        return country;</span>
-    }
+	/**
+	 * &lt;pre&gt;
+	 * Country country = countryByName.get(name);
+	 * if (country == null) {
+	 * 	country = createCountry(name, &quot;&quot;, 0);
+	 * }
+	 * return country;
+	 * &lt;/pre&gt;
+	 *
+	 * @param name
+	 * @return
+	 */
+	private Country alwaysGetCountry(String name) {
+<span class="fc" id="L137">		Country country = countryByName.get(name);</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">		if (country == null) {</span>
+<span class="fc" id="L139">			country = createCountry(name, &quot;&quot;, 0);</span>
+		}
+<span class="fc" id="L141">		return country;</span>
+	}
 
-    /**
-     * return countryById.get(random.nextInt(countryById.size()));
-     *
-     * @param random
-     * @return
-     */
-    public Country getACountryAnyCountry(Random random) {
-<span class="fc" id="L148">        return countryById.get(random.nextInt(countryById.size()));</span>
-    }
+	/**
+	 * return countryById.get(random.nextInt(countryById.size()));
+	 *
+	 * @param random
+	 * @return
+	 */
+	public Country getACountryAnyCountry(Random random) {
+<span class="fc" id="L151">		return countryById.get(random.nextInt(countryById.size()));</span>
+	}
 
-    public Country getCountryByName(String countryName) {
-<span class="fc" id="L152">        Optional&lt;Country&gt; opC = countryById.stream().filter(c -&gt; c.getName().toUpperCase().equals(countryName.toUpperCase())).findFirst();</span>
-<span class="fc bfc" id="L153" title="All 2 branches covered.">        return opC.isPresent() ? opC.get() : null;</span>
-    }
+	public Country getCountryByName(String countryName) {
+<span class="fc" id="L155">		Optional&lt;Country&gt; opC = countryById.stream()</span>
+<span class="fc" id="L156">				.filter(c -&gt; c.getName().toUpperCase().equals(countryName.toUpperCase())).findFirst();</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">		return opC.isPresent() ? opC.get() : null;</span>
+	}
 
-    /**
-     * &lt;pre&gt;
-     * int id = countryById.size();
-     * Country country = new Country(id, name, currency, exchange);
-     * countryById.add(country);
-     * countryByName.put(name, country);
-     * return country;
-     * &lt;/pre&gt;
-     *
-     * @param name
-     * @param currency
-     * @param exchange
-     * @return
-     */
-    public Country createCountry(String name, String currency, double exchange) {
-<span class="fc" id="L171">        int id = countryById.size();</span>
-<span class="fc" id="L172">        Country country = new Country(id, name, currency, exchange);</span>
-<span class="fc" id="L173">        countryById.add(country);</span>
-<span class="fc" id="L174">        countryByName.put(name, country);</span>
-<span class="fc" id="L175">        return country;</span>
-    }
+	/**
+	 * &lt;pre&gt;
+	 * int id = countryById.size();
+	 * Country country = new Country(id, name, currency, exchange);
+	 * countryById.add(country);
+	 * countryByName.put(name, country);
+	 * return country;
+	 * &lt;/pre&gt;
+	 *
+	 * @param name
+	 * @param currency
+	 * @param exchange
+	 * @return
+	 */
+	public Country createCountry(String name, String currency, double exchange) {
+<span class="fc" id="L175">		int id = countryById.size();</span>
+<span class="fc" id="L176">		Country country = new Country(id, name, currency, exchange);</span>
+<span class="fc" id="L177">		countryById.add(country);</span>
+<span class="fc" id="L178">		countryByName.put(name, country);</span>
+<span class="fc" id="L179">		return country;</span>
+	}
 
-    /**
-     * &lt;pre&gt;
-     * Country country = alwaysGetCountry(countryName);
-     * Address key = new Address(0, street1, street2, city, state, zip, country);
-     * Address address = addressByAll.get(key);
-     * if (address == null) {
-     *  address = createAddress(street1, street2, city, state, zip, country);
-     * }
-     * return address;
-     * &lt;/pre&gt;
-     *
-     * @param street1
-     * @param street2
-     * @param city
-     * @param state
-     * @param zip
-     * @param countryName
-     * @return
-     */
-    public Address alwaysGetAddress(String street1, String street2,
-            String city, String state, String zip, String countryName,
-            String latitude, String longitude, String buildingNumber) {
-<span class="fc" id="L200">        Country country = alwaysGetCountry(countryName);</span>
-<span class="fc" id="L201">        Address key = new Address(0, street1, street2, city, state, zip, country,</span>
-         latitude, longitude,  buildingNumber);
-<span class="fc" id="L203">        Address address = addressByAll.get(key);</span>
-<span class="fc bfc" id="L204" title="All 2 branches covered.">        if (address == null) {</span>
-<span class="fc" id="L205">            address = createAddress(street1, street2, city, state, zip,</span>
-                    country, latitude, longitude, buildingNumber);
-        }
-<span class="fc" id="L208">        return address;</span>
-    }
+	/**
+	 * &lt;pre&gt;
+	 * Country country = alwaysGetCountry(countryName);
+	 * Address key = new Address(0, street1, street2, city, state, zip, country);
+	 * Address address = addressByAll.get(key);
+	 * if (address == null) {
+	 * 	address = createAddress(street1, street2, city, state, zip, country);
+	 * }
+	 * return address;
+	 * &lt;/pre&gt;
+	 *
+	 * @param street1
+	 * @param street2
+	 * @param city
+	 * @param state
+	 * @param zip
+	 * @param countryName
+	 * @return
+	 */
+	public Address alwaysGetAddress(String street1, String street2, String city, String state, String zip,
+			String countryName, String latitude, String longitude, String buildingNumber) {
+<span class="fc" id="L203">		Country country = alwaysGetCountry(countryName);</span>
+<span class="fc" id="L204">		Address key = new Address(0, street1, street2, city, state, zip, country, latitude, longitude, buildingNumber);</span>
+<span class="fc" id="L205">		Address address = addressByAll.get(key);</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">		if (address == null) {</span>
+<span class="fc" id="L207">			address = createAddress(street1, street2, city, state, zip, country, latitude, longitude, buildingNumber);</span>
+		}
+<span class="fc" id="L209">		return address;</span>
+	}
 
-    /**
-     *
-     * @param random
-     * @return
-     */
-    public Address getAnAddressAnyAddress(Random random) {
-<span class="fc" id="L217">        return addressById.get(random.nextInt(addressById.size()));</span>
-    }
+	/**
+	 *
+	 * @param random
+	 * @return
+	 */
+	public Address getAnAddressAnyAddress(Random random) {
+<span class="fc" id="L218">		return addressById.get(random.nextInt(addressById.size()));</span>
+	}
 
-    public Address createAddress(String street1, String street2,
-            String city, String state, String zip, Country country, 
-            String latitude, String longitude, String buildingNumber) {
-<span class="fc" id="L223">        int id = addressById.size();</span>
-<span class="fc" id="L224">        Address address = new Address(id, street1, street2, city, state, zip, country, latitude, longitude, buildingNumber);</span>
-<span class="fc" id="L225">        addressById.add(address);</span>
-<span class="fc" id="L226">        addressByAll.put(address, address);</span>
-<span class="fc" id="L227">        return address;</span>
-    }
+	public Address createAddress(String street1, String street2, String city, String state, String zip, Country country,
+			String latitude, String longitude, String buildingNumber) {
+<span class="fc" id="L223">		int id = addressById.size();</span>
+<span class="fc" id="L224">		Address address = new Address(id, street1, street2, city, state, zip, country, latitude, longitude,</span>
+				buildingNumber);
+<span class="fc" id="L226">		addressById.add(address);</span>
+<span class="fc" id="L227">		addressByAll.put(address, address);</span>
+<span class="fc" id="L228">		return address;</span>
+	}
 
-    /**
-     *
-     * @param cId
-     * @return
-     */
-    public Customer getCustomer(int cId) {
-<span class="pc bpc" id="L236" title="1 of 2 branches missed.">        return (cId &gt;= customersById.size()) ? null : customersById.get(cId);</span>
-    }
+	/**
+	 *
+	 * @param cId
+	 * @return
+	 */
+	public Customer getCustomer(int cId) {
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">		return (cId &gt;= customersById.size()) ? null : customersById.get(cId);</span>
+	}
 
-    /**
-     *
-     * @param username
-     * @return
-     */
-    public Optional&lt;Customer&gt; getCustomer(String username) {
-<span class="fc" id="L245">        return Optional.ofNullable(customersByUsername.get(username));</span>
-    }
+	/**
+	 *
+	 * @param username
+	 * @return
+	 */
+	public Optional&lt;Customer&gt; getCustomer(String username) {
+<span class="fc" id="L246">		return Optional.ofNullable(customersByUsername.get(username));</span>
+	}
 
-    public Customer getACustomerAnyCustomer(Random random) {
-<span class="fc" id="L249">        return customersById.get(random.nextInt(customersById.size()));</span>
-    }
+	public Customer getACustomerAnyCustomer(Random random) {
+<span class="fc" id="L250">		return customersById.get(random.nextInt(customersById.size()));</span>
+	}
 
-    /**
-     * &lt;pre&gt;
-     * Address address = alwaysGetAddress(street1, street2, city, state, zip,
-     * countryName);
-     * return createCustomer(fname, lname, address, phone, email,
-     * new Date(now), new Date(now), new Date(now),
-     * new Date(now + 7200000 ), discount, birthdate,
-     * data);
-     * &lt;/pre&gt;
-     *
-     * @param fname
-     * @param lname
-     * @param street1
-     * @param street2
-     * @param city
-     * @param state
-     * @param zip
-     * @param countryName
-     * @param phone
-     * @param email
-     * @param discount
-     * @param birthdate
-     * @param data
-     * @param now
-     * @return
-     */
-    public Customer createCustomer(String fname, String lname, String street1,
-            String street2, String city, String state, String zip,
-            String countryName, String latitude, String longitude, 
-            String buildingNumber, String phone, String email, double discount,
-            Date birthdate, String data, long now) {
-<span class="fc" id="L283">        Address address = alwaysGetAddress(street1, street2, city, state, zip,</span>
-                countryName, latitude,  longitude, buildingNumber);
-<span class="fc" id="L285">        return createCustomer(fname, lname, address, phone, email,</span>
-                new Date(now), new Date(now), new Date(now),
-                new Date(now + 7200000 /* 2 hours */), discount, birthdate,
-                data);
-    }
+	/**
+	 * &lt;pre&gt;
+	 * Address address = alwaysGetAddress(street1, street2, city, state, zip, countryName);
+	 * return createCustomer(fname, lname, address, phone, email, new Date(now), new Date(now), new Date(now),
+	 * 		new Date(now + 7200000), discount, birthdate, data);
+	 * &lt;/pre&gt;
+	 *
+	 * @param fname
+	 * @param lname
+	 * @param street1
+	 * @param street2
+	 * @param city
+	 * @param state
+	 * @param zip
+	 * @param countryName
+	 * @param phone
+	 * @param email
+	 * @param discount
+	 * @param birthdate
+	 * @param data
+	 * @param now
+	 * @return
+	 */
+	public Customer createCustomer(String fname, String lname, String street1, String street2, String city,
+			String state, String zip, String countryName, String latitude, String longitude, String buildingNumber,
+			String phone, String email, double discount, Date birthdate, String data, long now) {
+<span class="fc" id="L279">		Address address = alwaysGetAddress(street1, street2, city, state, zip, countryName, latitude, longitude,</span>
+				buildingNumber);
+<span class="fc" id="L281">		return createCustomer(fname, lname, address, phone, email, new Date(now), new Date(now), new Date(now),</span>
+				new Date(now + 7200000 /* 2 hours */), discount, birthdate, data);
+	}
 
-    /**
-     * &lt;pre&gt;
-     *  int id = customersById.size();
-     * String uname = TPCW_Util.DigSyl(id, 0);
-     * Customer customer = new Customer(id, uname, uname.toLowerCase(), fname,
-     * lname, phone, email, since, lastVisit, login, expiration,
-     * discount, 0, 0, birthdate, data, address);
-     * customersById.add(customer);
-     * customersByUsername.put(uname, customer);
-     * return customer;
-     * &lt;/pre&gt;
-     *
-     * @param fname
-     * @param lname
-     * @param address
-     * @param phone
-     * @param email
-     * @param since
-     * @param lastVisit
-     * @param login
-     * @param expiration
-     * @param discount
-     * @param birthdate
-     * @param data
-     * @return
-     */
-    public Customer createCustomer(String fname, String lname, Address address,
-            String phone, String email, Date since, Date lastVisit,
-            Date login, Date expiration, double discount, Date birthdate,
-            String data) {
-<span class="fc" id="L321">        int id = customersById.size();</span>
-<span class="fc" id="L322">        String uname = TPCW_Util.DigSyl(id, 0);</span>
-<span class="fc" id="L323">        Customer customer = new Customer(id, uname, uname.toLowerCase(), fname,</span>
-                lname, phone, email, since, lastVisit, login, expiration,
-                discount, 0, 0, birthdate, data, address);
-<span class="fc" id="L326">        customersById.add(customer);</span>
-<span class="fc" id="L327">        customersByUsername.put(uname, customer);</span>
-<span class="fc" id="L328">        return customer;</span>
-    }
+	/**
+	 * &lt;pre&gt;
+	 * int id = customersById.size();
+	 * String uname = TPCW_Util.DigSyl(id, 0);
+	 * Customer customer = new Customer(id, uname, uname.toLowerCase(), fname, lname, phone, email, since, lastVisit,
+	 * 		login, expiration, discount, 0, 0, birthdate, data, address);
+	 * customersById.add(customer);
+	 * customersByUsername.put(uname, customer);
+	 * return customer;
+	 * &lt;/pre&gt;
+	 *
+	 * @param fname
+	 * @param lname
+	 * @param address
+	 * @param phone
+	 * @param email
+	 * @param since
+	 * @param lastVisit
+	 * @param login
+	 * @param expiration
+	 * @param discount
+	 * @param birthdate
+	 * @param data
+	 * @return
+	 */
+	public Customer createCustomer(String fname, String lname, Address address, String phone, String email, Date since,
+			Date lastVisit, Date login, Date expiration, double discount, Date birthdate, String data) {
+<span class="fc" id="L312">		int id = customersById.size();</span>
+<span class="fc" id="L313">		String uname = TPCW_Util.DigSyl(id, 0);</span>
+<span class="fc" id="L314">		Customer customer = new Customer(id, uname, uname.toLowerCase(), fname, lname, phone, email, since, lastVisit,</span>
+				login, expiration, discount, 0, 0, birthdate, data, address);
+<span class="fc" id="L316">		customersById.add(customer);</span>
+<span class="fc" id="L317">		customersByUsername.put(uname, customer);</span>
+<span class="fc" id="L318">		return customer;</span>
+	}
 
-    /**
-     * &lt;pre&gt;
-     * Customer customer = getCustomer(cId);
-     * if (customer != null) {
-     * customer.setLogin(new Date(now));
-     * customer.setExpiration(new Date(now + 7200000 ));
-     * }
-     * &lt;/pre&gt;
-     *
-     * @param cId
-     * @param now
-     */
-    public void refreshCustomerSession(int cId, long now) {
-<span class="fc" id="L344">        Customer customer = getCustomer(cId);</span>
-<span class="pc bpc" id="L345" title="1 of 2 branches missed.">        if (customer != null) {</span>
-<span class="fc" id="L346">            customer.setLogin(new Date(now));</span>
-<span class="fc" id="L347">            customer.setExpiration(new Date(now + 7200000 /* 2 hours */));</span>
-        }
-<span class="fc" id="L349">    }</span>
+	/**
+	 * &lt;pre&gt;
+	 * Customer customer = getCustomer(cId);
+	 * if (customer != null) {
+	 * 	customer.setLogin(new Date(now));
+	 * 	customer.setExpiration(new Date(now + 7200000));
+	 * }
+	 * &lt;/pre&gt;
+	 *
+	 * @param cId
+	 * @param now
+	 */
+	public void refreshCustomerSession(int cId, long now) {
+<span class="fc" id="L334">		Customer customer = getCustomer(cId);</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">		if (customer != null) {</span>
+<span class="fc" id="L336">			customer.setLogin(new Date(now));</span>
+<span class="fc" id="L337">			customer.setExpiration(new Date(now + 7200000 /* 2 hours */));</span>
+		}
+<span class="fc" id="L339">	}</span>
 
-    public Author getAnAuthorAnyAuthor(Random random) {
-<span class="fc" id="L352">        return authorsById.get(random.nextInt(authorsById.size()));</span>
-    }
+	public Author getAnAuthorAnyAuthor(Random random) {
+<span class="fc" id="L342">		return authorsById.get(random.nextInt(authorsById.size()));</span>
+	}
 
-    public Author createAuthor(String fname, String mname, String lname,
-            Date birthdate, String bio) {
-<span class="fc" id="L357">        Author author = new Author(fname, mname, lname, birthdate, bio);</span>
-<span class="fc" id="L358">        authorsById.add(author);</span>
-<span class="fc" id="L359">        return author;</span>
-    }
+	public Author createAuthor(String fname, String mname, String lname, Date birthdate, String bio) {
+<span class="fc" id="L346">		Author author = new Author(fname, mname, lname, birthdate, bio);</span>
+<span class="fc" id="L347">		authorsById.add(author);</span>
+<span class="fc" id="L348">		return author;</span>
+	}
 
-    /**
-     *
-     * @param bId
-     * @return
-     */
-    public Optional&lt;Book&gt; getBook(int bId) {
-<span class="fc" id="L368">        return Optional.ofNullable(booksById.get(bId));</span>
-    }
+	/**
+	 *
+	 * @param bId
+	 * @return
+	 */
+	public Optional&lt;Book&gt; getBook(int bId) {
+<span class="fc" id="L357">		return Optional.ofNullable(booksById.get(bId));</span>
+	}
 
-    public Book getABookAnyBook(Random random) {
-<span class="fc" id="L372">        return booksById.get(random.nextInt(booksById.size()));</span>
-    }
+	public Book getABookAnyBook(Random random) {
+<span class="fc" id="L361">		return booksById.get(random.nextInt(booksById.size()));</span>
+	}
 
-    /**
-     * &lt;pre&gt;
-     * ArrayList&amp;lt;Book&amp;gt; books = new ArrayList&amp;lt;&amp;gt;();
-     * for (Book book : booksById) {
-     * if (subject.equals(book.getSubject())) {
-     * books.add(book);
-     * if (books.size() &amp;gt; 50) {
-     * break;
-     * }
-     * }
-     * }
-     * Collections.sort(books, (Book a, Book b) -&amp;gt; a.getTitle().compareTo(b.getTitle()));
-     * return books;
-     * &lt;/pre&gt;
-     *
-     * @param subject
-     * @return
-     */
-    public List&lt;Book&gt; getBooksBySubject(String subject) {
-<span class="fc" id="L394">        ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
-<span class="pc bpc" id="L395" title="1 of 2 branches missed.">        for (Book book : booksById) {</span>
-<span class="fc bfc" id="L396" title="All 2 branches covered.">            if (subject.equals(book.getSubject())) {</span>
-<span class="fc" id="L397">                books.add(book);</span>
-<span class="fc bfc" id="L398" title="All 2 branches covered.">                if (books.size() &gt; 50) {</span>
-<span class="fc" id="L399">                    break;</span>
-                }
-            }
-<span class="fc" id="L402">        }</span>
-<span class="fc" id="L403">        Collections.sort(books, (Book a, Book b) -&gt; a.getTitle().compareTo(b.getTitle()));</span>
-<span class="fc" id="L404">        return books;</span>
-    }
+	/**
+	 * &lt;pre&gt;
+	 * ArrayList&amp;lt;Book&amp;gt; books = new ArrayList&amp;lt;&amp;gt;();
+	 * for (Book book : booksById) {
+	 * 	if (subject.equals(book.getSubject())) {
+	 * 		books.add(book);
+	 * 		if (books.size() &amp;gt; 50) {
+	 * 			break;
+	 * 		}
+	 * 	}
+	 * }
+	 * Collections.sort(books, (Book a, Book b) -&amp;gt; a.getTitle().compareTo(b.getTitle()));
+	 * return books;
+	 * &lt;/pre&gt;
+	 *
+	 * @param subject
+	 * @return
+	 */
+	public List&lt;Book&gt; getBooksBySubject(String subject) {
+<span class="fc" id="L383">		ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">		for (Book book : booksById) {</span>
+<span class="fc bfc" id="L385" title="All 2 branches covered.">			if (subject.equals(book.getSubject())) {</span>
+<span class="fc" id="L386">				books.add(book);</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">				if (books.size() &gt; 50) {</span>
+<span class="fc" id="L388">					break;</span>
+				}
+			}
+<span class="fc" id="L391">		}</span>
+<span class="fc" id="L392">		Collections.sort(books, (Book a, Book b) -&gt; a.getTitle().compareTo(b.getTitle()));</span>
+<span class="fc" id="L393">		return books;</span>
+	}
 
-    /**
-     *
-     * @param title
-     * @return
-     */
-    public List&lt;Book&gt; getBooksByTitle(String title) {
-<span class="fc" id="L413">        Pattern regex = Pattern.compile(&quot;^&quot; + title);</span>
-<span class="fc" id="L414">        ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L415" title="All 2 branches covered.">        for (Book book : booksById) {</span>
-<span class="pc bpc" id="L416" title="1 of 2 branches missed.">            if (regex.matcher(book.getTitle()).matches()) {</span>
-<span class="nc" id="L417">                books.add(book);</span>
-<span class="nc bnc" id="L418" title="All 2 branches missed.">                if (books.size() &gt; 50) {</span>
-<span class="nc" id="L419">                    break;</span>
-                }
-            }
-<span class="fc" id="L422">        }</span>
-<span class="pc" id="L423">        Collections.sort(books, (Book a, Book b) -&gt; a.getTitle().compareTo(b.getTitle()));</span>
-<span class="fc" id="L424">        return books;</span>
-    }
+	/**
+	 *
+	 * @param title
+	 * @return
+	 */
+	public List&lt;Book&gt; getBooksByTitle(String title) {
+<span class="fc" id="L402">		Pattern regex = Pattern.compile(&quot;^&quot; + title);</span>
+<span class="fc" id="L403">		ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L404" title="All 2 branches covered.">		for (Book book : booksById) {</span>
+<span class="pc bpc" id="L405" title="1 of 2 branches missed.">			if (regex.matcher(book.getTitle()).matches()) {</span>
+<span class="nc" id="L406">				books.add(book);</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">				if (books.size() &gt; 50) {</span>
+<span class="nc" id="L408">					break;</span>
+				}
+			}
+<span class="fc" id="L411">		}</span>
+<span class="pc" id="L412">		Collections.sort(books, (Book a, Book b) -&gt; a.getTitle().compareTo(b.getTitle()));</span>
+<span class="fc" id="L413">		return books;</span>
+	}
 
-    /**
-     *
-     * @param author
-     * @return
-     */
-    public List&lt;Book&gt; getBooksByAuthor(String author) {
-<span class="fc" id="L433">        Pattern regex = Pattern.compile(&quot;^&quot; + author);</span>
-<span class="fc" id="L434">        ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
-<span class="pc bpc" id="L435" title="1 of 2 branches missed.">        for (Book book : booksById) {</span>
-<span class="pc bpc" id="L436" title="1 of 2 branches missed.">            if (regex.matcher(book.getAuthor().getLname()).matches()) {</span>
-<span class="fc" id="L437">                books.add(book);</span>
-<span class="fc bfc" id="L438" title="All 2 branches covered.">                if (books.size() &gt; 50) {</span>
-<span class="fc" id="L439">                    break;</span>
-                }
-            }
-<span class="fc" id="L442">        }</span>
-<span class="fc" id="L443">        Collections.sort(books, (Book a, Book b) -&gt; a.getTitle().compareTo(b.getTitle()));</span>
-<span class="fc" id="L444">        return books;</span>
-    }
+	/**
+	 *
+	 * @param author
+	 * @return
+	 */
+	public List&lt;Book&gt; getBooksByAuthor(String author) {
+<span class="fc" id="L422">		Pattern regex = Pattern.compile(&quot;^&quot; + author);</span>
+<span class="fc" id="L423">		ArrayList&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L424" title="1 of 2 branches missed.">		for (Book book : booksById) {</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">			if (regex.matcher(book.getAuthor().getLname()).matches()) {</span>
+<span class="fc" id="L426">				books.add(book);</span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">				if (books.size() &gt; 50) {</span>
+<span class="fc" id="L428">					break;</span>
+				}
+			}
+<span class="fc" id="L431">		}</span>
+<span class="fc" id="L432">		Collections.sort(books, (Book a, Book b) -&gt; a.getTitle().compareTo(b.getTitle()));</span>
+<span class="fc" id="L433">		return books;</span>
+	}
 
-    /**
-     * Retorna os 50 livros mais recentes (PubDate) por assunto
-     *
-     * @param subject
-     * @return
-     */
-    public List&lt;Book&gt; getNewBooks(String subject) {
-<span class="fc" id="L454">        return getNewBooks0(subject);</span>
-    }
+	/**
+	 * Retorna os 50 livros mais recentes (PubDate) por assunto
+	 *
+	 * @param subject
+	 * @return
+	 */
+	public List&lt;Book&gt; getNewBooks(String subject) {
+<span class="fc" id="L443">		return getNewBooks0(subject);</span>
+	}
 
-    /**
-     *
-     * @param subject
-     * @return
-     */
-    List&lt;Book&gt; getNewBooks0(String subject) {
-<span class="fc" id="L463">        ArrayList&lt;Book&gt; books = new ArrayList&lt;Book&gt;();</span>
-<span class="fc bfc" id="L464" title="All 2 branches covered.">        for (Book book : booksById) {</span>
-<span class="fc bfc" id="L465" title="All 2 branches covered.">            if (subject.equals(book.getSubject())) {</span>
-<span class="fc" id="L466">                books.add(book);</span>
-            }
-<span class="fc" id="L468">        }</span>
-<span class="fc" id="L469">        Collections.sort(books, new Comparator&lt;Book&gt;() {</span>
-            public int compare(Book a, Book b) {
-<span class="fc" id="L471">                int result = b.getPubDate().compareTo(a.getPubDate());</span>
-<span class="fc bfc" id="L472" title="All 2 branches covered.">                if (result == 0) {</span>
-<span class="fc" id="L473">                    result = a.getTitle().compareTo(b.getTitle());</span>
-                }
-<span class="fc" id="L475">                return result;</span>
-            }
-        });
-<span class="pc bpc" id="L478" title="1 of 2 branches missed.">        return books.subList(0, books.size() &gt;= 50 ? 50 : books.size());</span>
-    }
+	/**
+	 *
+	 * @param subject
+	 * @return
+	 */
+	List&lt;Book&gt; getNewBooks0(String subject) {
+<span class="fc" id="L452">		ArrayList&lt;Book&gt; books = new ArrayList&lt;Book&gt;();</span>
+<span class="fc bfc" id="L453" title="All 2 branches covered.">		for (Book book : booksById) {</span>
+<span class="fc bfc" id="L454" title="All 2 branches covered.">			if (subject.equals(book.getSubject())) {</span>
+<span class="fc" id="L455">				books.add(book);</span>
+			}
+<span class="fc" id="L457">		}</span>
+<span class="fc" id="L458">		Collections.sort(books, new Comparator&lt;Book&gt;() {</span>
+			public int compare(Book a, Book b) {
+<span class="fc" id="L460">				int result = b.getPubDate().compareTo(a.getPubDate());</span>
+<span class="fc bfc" id="L461" title="All 2 branches covered.">				if (result == 0) {</span>
+<span class="fc" id="L462">					result = a.getTitle().compareTo(b.getTitle());</span>
+				}
+<span class="fc" id="L464">				return result;</span>
+			}
+		});
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">		return books.subList(0, books.size() &gt;= 50 ? 50 : books.size());</span>
+	}
 
-    List&lt;Book&gt; getNewBooks1(String subject) {
-<span class="nc" id="L482">        ArrayList&lt;Book&gt; books = new ArrayList&lt;Book&gt;();</span>
+	List&lt;Book&gt; getNewBooks1(String subject) {
+<span class="nc" id="L471">		ArrayList&lt;Book&gt; books = new ArrayList&lt;Book&gt;();</span>
 
-<span class="nc" id="L484">        booksById.stream().forEach(book -&gt; {</span>
-<span class="nc bnc" id="L485" title="All 2 branches missed.">            if (subject.equals(book.getSubject())) {</span>
-<span class="nc" id="L486">                books.add(book);</span>
-            }
-<span class="nc" id="L488">        });</span>
+<span class="nc" id="L473">		booksById.stream().forEach(book -&gt; {</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">			if (subject.equals(book.getSubject())) {</span>
+<span class="nc" id="L475">				books.add(book);</span>
+			}
+<span class="nc" id="L477">		});</span>
 
-<span class="nc" id="L490">        return books.stream().sorted((a, b) -&gt; {</span>
-<span class="nc" id="L491">            int result = b.getPubDate().compareTo(a.getPubDate());</span>
-<span class="nc bnc" id="L492" title="All 2 branches missed.">            if (result == 0) {</span>
-<span class="nc" id="L493">                result = a.getTitle().compareTo(b.getTitle());</span>
-            }
-<span class="nc" id="L495">            return result;</span>
-<span class="nc" id="L496">        }).limit(50).collect(Collectors.toList());</span>
-    }
+<span class="nc" id="L479">		return books.stream().sorted((a, b) -&gt; {</span>
+<span class="nc" id="L480">			int result = b.getPubDate().compareTo(a.getPubDate());</span>
+<span class="nc bnc" id="L481" title="All 2 branches missed.">			if (result == 0) {</span>
+<span class="nc" id="L482">				result = a.getTitle().compareTo(b.getTitle());</span>
+			}
+<span class="nc" id="L484">			return result;</span>
+<span class="nc" id="L485">		}).limit(50).collect(Collectors.toList());</span>
+	}
 
-    /**
-     *
-     * @param subject
-     * @return
-     */
-    List&lt;Book&gt; getNewBooks2(String subject) {
-<span class="fc" id="L505">        List&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L506">        booksById.stream()</span>
-<span class="fc" id="L507">                .filter((book) -&gt; (subject.equals(book.getSubject())))</span>
-<span class="fc" id="L508">                .forEachOrdered((book) -&gt; {</span>
-<span class="fc" id="L509">                    books.add(book);</span>
-<span class="fc" id="L510">                });</span>
-<span class="fc" id="L511">        Collections.sort(books, (Book a, Book b) -&gt; {</span>
-<span class="fc" id="L512">            int result = b.getPubDate().compareTo(a.getPubDate());</span>
-<span class="fc bfc" id="L513" title="All 2 branches covered.">            if (result == 0) {</span>
-<span class="fc" id="L514">                result = a.getTitle().compareTo(b.getTitle());</span>
-            }
-<span class="fc" id="L516">            return result;</span>
-        });
-<span class="pc bpc" id="L518" title="1 of 2 branches missed.">        return books.subList(0, books.size() &gt;= 50 ? 50 : books.size());</span>
-    }
+	/**
+	 *
+	 * @param subject
+	 * @return
+	 */
+	List&lt;Book&gt; getNewBooks2(String subject) {
+<span class="fc" id="L494">		List&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L495">		booksById.stream().filter((book) -&gt; (subject.equals(book.getSubject()))).forEachOrdered((book) -&gt; {</span>
+<span class="fc" id="L496">			books.add(book);</span>
+<span class="fc" id="L497">		});</span>
+<span class="fc" id="L498">		Collections.sort(books, (Book a, Book b) -&gt; {</span>
+<span class="fc" id="L499">			int result = b.getPubDate().compareTo(a.getPubDate());</span>
+<span class="fc bfc" id="L500" title="All 2 branches covered.">			if (result == 0) {</span>
+<span class="fc" id="L501">				result = a.getTitle().compareTo(b.getTitle());</span>
+			}
+<span class="fc" id="L503">			return result;</span>
+		});
+<span class="pc bpc" id="L505" title="1 of 2 branches missed.">		return books.subList(0, books.size() &gt;= 50 ? 50 : books.size());</span>
+	}
 
-    /**
-     *
-     * @param subject
-     * @return
-     */
-    List&lt;Book&gt; getNewBooks3(String subject) {
-<span class="fc" id="L527">        return booksById.stream()</span>
-<span class="fc" id="L528">                .filter((book) -&gt; (subject.equals(book.getSubject())))</span>
-<span class="fc" id="L529">                .sorted((Book a, Book b) -&gt; {</span>
-<span class="fc" id="L530">                    int result = b.getPubDate().compareTo(a.getPubDate());</span>
-<span class="fc bfc" id="L531" title="All 2 branches covered.">                    if (result == 0) {</span>
-<span class="fc" id="L532">                        result = a.getTitle().compareTo(b.getTitle());</span>
-                    }
-<span class="fc" id="L534">                    return result;</span>
-<span class="fc" id="L535">                }).limit(50)</span>
-<span class="fc" id="L536">                .collect(Collectors.toList());</span>
+	/**
+	 *
+	 * @param subject
+	 * @return
+	 */
+	List&lt;Book&gt; getNewBooks3(String subject) {
+<span class="fc" id="L514">		return booksById.stream().filter((book) -&gt; (subject.equals(book.getSubject()))).sorted((Book a, Book b) -&gt; {</span>
+<span class="fc" id="L515">			int result = b.getPubDate().compareTo(a.getPubDate());</span>
+<span class="fc bfc" id="L516" title="All 2 branches covered.">			if (result == 0) {</span>
+<span class="fc" id="L517">				result = a.getTitle().compareTo(b.getTitle());</span>
+			}
+<span class="fc" id="L519">			return result;</span>
+<span class="fc" id="L520">		}).limit(50).collect(Collectors.toList());</span>
 
-    }
+	}
 
-    /**
-     *
-     * @param subject
-     * @return
-     */
-    List&lt;Book&gt; getNewBooks4(String subject) {
-<span class="fc" id="L546">        return booksById.parallelStream()</span>
-<span class="fc" id="L547">                .filter((book) -&gt; (subject.equals(book.getSubject())))</span>
-<span class="fc" id="L548">                .sorted((Book a, Book b) -&gt; {</span>
-<span class="fc" id="L549">                    int result = b.getPubDate().compareTo(a.getPubDate());</span>
-<span class="fc bfc" id="L550" title="All 2 branches covered.">                    if (result == 0) {</span>
-<span class="fc" id="L551">                        result = a.getTitle().compareTo(b.getTitle());</span>
-                    }
-<span class="fc" id="L553">                    return result;</span>
-<span class="fc" id="L554">                }).limit(50)</span>
-<span class="fc" id="L555">                .collect(Collectors.toList());</span>
-    }
+	/**
+	 *
+	 * @param subject
+	 * @return
+	 */
+	List&lt;Book&gt; getNewBooks4(String subject) {
+<span class="fc" id="L530">		return booksById.parallelStream().filter((book) -&gt; (subject.equals(book.getSubject())))</span>
+<span class="fc" id="L531">				.sorted((Book a, Book b) -&gt; {</span>
+<span class="fc" id="L532">					int result = b.getPubDate().compareTo(a.getPubDate());</span>
+<span class="fc bfc" id="L533" title="All 2 branches covered.">					if (result == 0) {</span>
+<span class="fc" id="L534">						result = a.getTitle().compareTo(b.getTitle());</span>
+					}
+<span class="fc" id="L536">					return result;</span>
+<span class="fc" id="L537">				}).limit(50).collect(Collectors.toList());</span>
+	}
 
-    /**
-     *
-     */
-    public static class Counter {
+	/**
+	 *
+	 */
+	public static class Counter {
 
-        /**
-         *
-         */
-        public final Book book;
-        public int count;
+		/**
+		 *
+		 */
+		public final Book book;
+		public int count;
 
-<span class="nc" id="L569">        public Counter(Book book, int count) {</span>
-<span class="nc" id="L570">            this.book = book;</span>
-<span class="nc" id="L571">            this.count = count;</span>
-<span class="nc" id="L572">        }</span>
-        
-        
+<span class="nc" id="L551">		public Counter(Book book, int count) {</span>
+<span class="nc" id="L552">			this.book = book;</span>
+<span class="nc" id="L553">			this.count = count;</span>
+<span class="nc" id="L554">		}</span>
 
-        public Book getBook() {
-<span class="nc" id="L577">            return this.book;</span>
-        }
+		public Book getBook() {
+<span class="nc" id="L557">			return this.book;</span>
+		}
 
-        /**
-         *
-         */
-        public int getCounter() {
-<span class="nc" id="L584">            return this.count;</span>
-        }
-    }
-
-    /**
-     * &lt;b&gt;&lt;u&gt;Tarefa: desenvolver o método getBestSellers. &lt;/u&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-     *  1 - Desenvolver o método
-     * que busca os 50 livros mais vendidos &quot;bestsellers&quot; para um determinado
-     * assunto (subject).&lt;br&gt; 2 - Desenvolver o teste funcional do método.&lt;br&gt;
-     *
-     *
-     * @param subject
-     * @return
-     */
-    public List&lt;Book&gt; getBestSellers(final String subject) {
-    	
-<span class="fc" id="L600"> HashMap&lt;Book,Integer&gt; sellCounter = new HashMap&lt;Book,Integer&gt;();</span>
-<span class="fc" id="L601"> List&lt;Book&gt; books = Bookstore.getInstance().getBooksById();</span>
- 
- 
- int quantity;
-
-<span class="fc bfc" id="L606" title="All 2 branches covered."> for(Book book : books) {</span>
-<span class="fc" id="L607">	 quantity = 0;</span>
- 
-<span class="fc bfc" id="L609" title="All 2 branches covered.">	 if ( book.getSubject().equals(subject)) {</span>
-<span class="fc bfc" id="L610" title="All 2 branches covered.">		for (Order order : ordersByCreation) {</span>
-<span class="fc bfc" id="L611" title="All 2 branches covered.">			 if (order.getStatus().equals(&quot;SHIPPED&quot;)){				 				 </span>
-<span class="fc bfc" id="L612" title="All 2 branches covered.">		         for (OrderLine line : order.getLines()) {</span>
-<span class="fc bfc" id="L613" title="All 2 branches covered.">			       if (line.getBook().equals(book)) {</span>
-<span class="fc" id="L614">			    	   quantity += line.getQty();</span>
-			       }
-<span class="fc" id="L616">		         }</span>
-			 } 
-<span class="fc" id="L618">		 }</span>
-<span class="fc" id="L619">		 Integer value = sellCounter.get(book);</span>
-<span class="pc bpc" id="L620" title="1 of 2 branches missed.">		 if (value != null) {</span>
-<span class="nc" id="L621">			 sellCounter.put(book, value +quantity);</span>
-		 }else {
-<span class="fc" id="L623">			 sellCounter.put(book, quantity);</span>
-		 }
-		 
-	 }
-<span class="fc" id="L627"> }	 </span>
-
-<span class="fc" id="L629">LinkedHashMap&lt;Book, Integer&gt; sorted =</span>
-<span class="fc" id="L630">	sellCounter.entrySet()</span>
-<span class="fc" id="L631">		.stream()</span>
-<span class="fc" id="L632">		.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(50)</span>
-<span class="fc" id="L633">        .collect(Collectors.toMap(e-&gt; e.getKey(), e-&gt; e.getValue(),</span>
-<span class="nc" id="L634">        		(e1, e2) -&gt; null,</span>
-<span class="fc" id="L635">        		() -&gt; new LinkedHashMap&lt;Book,Integer&gt;()));</span>
-<span class="fc" id="L636">     System.out.println(sorted) ;</span>
-
-<span class="fc" id="L638">List&lt;Book&gt; sortedList = new ArrayList&lt;&gt; (sorted.keySet());</span>
-
-<span class="fc" id="L640">System.out.println(sortedList);</span>
-
-<span class="fc" id="L642">return sortedList;</span>
-        
+		/**
+		 *
+		 */
+		public int getCounter() {
+<span class="nc" id="L564">			return this.count;</span>
+		}
+	}
+	public List &lt;Counter&gt; getCounterSellers(int qty, String subject){
+		
+		
+<span class="nc" id="L570">		return null;</span>
+	}
 	
- 
- }
- 	
-       	
-    
-    /**
-     *
-     * @param subject
-     * @return
-     */
-    public Book createBook(String title, Date pubDate, String publisher,
-            String subject, String desc, String thumbnail,
-            String image, double srp, double cost, Date avail, String isbn,
-            int page, String backing, String dimensions, Author author,
-            int stock) {
-<span class="fc" id="L660">        int id = booksById.size();</span>
-<span class="fc" id="L661">        Book book = new Book(id, title, pubDate, publisher, subject, desc,</span>
-                thumbnail, image, srp, cost, avail, isbn, page, backing,
-                dimensions, author, stock);
-<span class="fc" id="L664">        booksById.add(book);</span>
-<span class="fc" id="L665">        return book;</span>
-    }
 
-    /**
-     *
-     * @param bId
-     * @param cost
-     * @param image
-     * @param thumbnail
-     * @param now
-     */
-    public void updateBook(int bId, double cost, String image,
-            String thumbnail, long now) {
-<span class="fc" id="L678">        Book book = getBook(bId).get();</span>
-<span class="fc" id="L679">        book.setCost(cost);</span>
-<span class="fc" id="L680">        book.setImage(image);</span>
-<span class="fc" id="L681">        book.setThumbnail(thumbnail);</span>
-<span class="fc" id="L682">        book.setPubDate(new Date(now));</span>
-<span class="fc" id="L683">        updateRelatedBooks(book);</span>
-<span class="fc" id="L684">    }</span>
+	/**
+	 * &lt;b&gt;&lt;u&gt;Tarefa: desenvolver o método getBestSellers. &lt;/u&gt;&lt;/b&gt;&lt;br&gt;
+	 * &lt;br&gt;
+	 * 1 - Desenvolver o método que busca os 50 livros mais vendidos &quot;bestsellers&quot;
+	 * para um determinado assunto (subject).&lt;br&gt;
+	 * 2 - Desenvolver o teste funcional do método.&lt;br&gt;
+	 *
+	 *
+	 * @param subject
+	 * @return
+	 */
 
-    /**
-     * For all the clients that bought this book in the last 10000 orders, what
-     * are the five most sold books except this one.
-     */
-    private void updateRelatedBooks(Book targetBook) {
-<span class="fc" id="L691">        HashSet&lt;Integer&gt; clientIds = new HashSet&lt;&gt;();</span>
-<span class="fc" id="L692">        int j = 0;</span>
-<span class="fc" id="L693">        Iterator&lt;Order&gt; i = ordersByCreation.iterator();</span>
-<span class="pc bpc" id="L694" title="1 of 4 branches missed.">        while (i.hasNext() &amp;&amp; j &lt;= 10000) {</span>
-<span class="fc" id="L695">            Order order = i.next();</span>
-<span class="fc bfc" id="L696" title="All 2 branches covered.">            for (OrderLine line : order.getLines()) {</span>
-<span class="fc" id="L697">                Book book = line.getBook();</span>
-<span class="pc bpc" id="L698" title="1 of 2 branches missed.">                if (targetBook.getId() == book.getId()) {</span>
-<span class="nc" id="L699">                    clientIds.add(order.getCustomer().getId());</span>
-<span class="nc" id="L700">                    break;</span>
-                }
-<span class="fc" id="L702">            }</span>
-<span class="fc" id="L703">            j++;</span>
-<span class="fc" id="L704">        }</span>
-<span class="fc" id="L705">        HashMap&lt;Integer, Counter&gt; counters = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L706">        i = ordersByCreation.iterator();</span>
-<span class="fc bfc" id="L707" title="All 2 branches covered.">        while (i.hasNext()) {</span>
-<span class="fc" id="L708">            Order order = i.next();</span>
-<span class="pc bpc" id="L709" title="1 of 2 branches missed.">            if (clientIds.contains(order.getCustomer().getId())) {</span>
-<span class="nc" id="L710">                order.getLines().forEach((line) -&gt; {</span>
-<span class="nc" id="L711">                    Book book = line.getBook();</span>
-<span class="nc bnc" id="L712" title="All 2 branches missed.">                    if (targetBook.getId() != book.getId()) {</span>
-<span class="nc" id="L713">                        Counter counter = counters.get(book.getId());</span>
-<span class="nc bnc" id="L714" title="All 2 branches missed.">                        if (counter == null) {</span>
-<span class="nc" id="L715">                            counter = new Counter(book, 0);</span>
-<span class="nc" id="L716">                            counters.put(book.getId(), counter);</span>
-                        }
-<span class="nc" id="L718">                        counter.count += line.getQty();</span>
-                    }
-<span class="nc" id="L720">                });</span>
-            }
-<span class="fc" id="L722">        }</span>
-<span class="fc" id="L723">        Counter[] sorted = counters.values().toArray(new Counter[]{});</span>
-<span class="fc" id="L724">        Arrays.sort(sorted, (Counter a, Counter b) -&gt; {</span>
-<span class="nc bnc" id="L725" title="All 2 branches missed.">            if (b.count &gt; a.count) {</span>
-<span class="nc" id="L726">                return 1;</span>
-            }
-<span class="nc bnc" id="L728" title="All 2 branches missed.">            return b.count &lt; a.count ? -1 : 0;</span>
-        });
-<span class="fc" id="L730">        Book[] related = new Book[]{targetBook, targetBook, targetBook,</span>
-            targetBook, targetBook};
-<span class="pc bpc" id="L732" title="2 of 4 branches missed.">        for (j = 0; j &lt; 5 &amp;&amp; j &lt; sorted.length; j++) {</span>
-<span class="nc" id="L733">            related[j] = sorted[j].book;</span>
-        }
-<span class="fc" id="L735">        targetBook.setRelated1(related[0]);</span>
-<span class="fc" id="L736">        targetBook.setRelated2(related[1]);</span>
-<span class="fc" id="L737">        targetBook.setRelated3(related[2]);</span>
-<span class="fc" id="L738">        targetBook.setRelated4(related[3]);</span>
-<span class="fc" id="L739">        targetBook.setRelated5(related[4]);</span>
-<span class="fc" id="L740">    }</span>
+	public List&lt;Book&gt; getBestSellers(final String subject) {
+		
+<span class="fc" id="L588">		HashMap&lt;Book, Integer&gt; sellCounter = new  HashMap&lt;&gt;();</span>
+<span class="fc" id="L589">		ArrayList&lt;OrderLine&gt; lines = new ArrayList&lt;&gt;();</span>
+		
 
-    /**
-     *
-     * @param id
-     * @return
-     */
-    public Cart getCart(int id) {
-<span class="fc" id="L748">        return cartsById.get(id);</span>
-    }
+<span class="fc" id="L592">		List&lt;Order&gt; orders = ordersById.parallelStream().filter(order -&gt; &quot;SHIPPED&quot;.equals(order.getStatus()))</span>
+<span class="fc" id="L593">				.collect(Collectors.toList());</span>
+<span class="fc bfc" id="L594" title="All 2 branches covered.">		for (Order order :orders){</span>
+<span class="fc bfc" id="L595" title="All 2 branches covered.">			for (OrderLine line : order.getLines()) {</span>
+<span class="fc bfc" id="L596" title="All 2 branches covered.">				if (line.getBook().getSubject().equals(subject)) {</span>
+<span class="fc" id="L597">					lines.add(line);</span>
+				}
+<span class="fc" id="L599">			}</span>
+<span class="fc" id="L600">		}</span>
+		//orders.parallelStream().forEach(null); //
+		
+<span class="fc bfc" id="L603" title="All 2 branches covered.">		for (OrderLine line : lines) {</span>
+<span class="fc bfc" id="L604" title="All 2 branches covered.">			if (Objects.isNull(sellCounter.get(line.getBook()))) {</span>
+<span class="fc" id="L605">				sellCounter.put(line.getBook(), line.getQty());</span>
+			}
+			
+<span class="fc" id="L608">			sellCounter.merge(line.getBook(), line.getQty(),Integer::sum);</span>
+			
+		
+			
+					
+			
+<span class="fc" id="L614">		}</span>
+<span class="fc" id="L615">		LinkedHashMap&lt;Book, Integer&gt; sorted = sellCounter.entrySet() .stream()</span>
+		
+								 
+<span class="fc" id="L618">				                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(50).sequential()</span>
+<span class="pc" id="L619">				                  .collect(Collectors.toMap(e-&gt; e.getKey(), e-&gt; e.getValue(), (e1, e2) -&gt; null,</span>
+<span class="fc" id="L620">		                           () -&gt; new LinkedHashMap&lt;Book,Integer&gt;()));</span>
+<span class="fc" id="L621">			                       List&lt;Book&gt; sortedList = new ArrayList&lt;&gt; (sorted.keySet());</span>
+			 
+<span class="fc" id="L623">			 return sortedList;</span>
+				  
+	}
+	
+	
+		
 
-    /**
-     *
-     * @param now
-     * @return
-     */
-    public Cart createCart(long now) {
-<span class="fc" id="L757">        int id = cartsById.size();</span>
-<span class="fc" id="L758">        Cart cart = new Cart(id, new Date(now));</span>
-<span class="fc" id="L759">        cartsById.add(cart);</span>
-<span class="fc" id="L760">        return cart;</span>
-    }
 
-    /**
-     *
-     * @param cId
-     * @param bId
-     * @param bIds
-     * @param quantities
-     * @param now
-     * @return
-     */
-    public Cart updateCart(int cId, Integer bId, List&lt;Integer&gt; bIds,
-                           List&lt;Integer&gt; quantities, long now) {
-<span class="fc" id="L774">        Cart cart = getCart(cId);</span>
+	// System.out.println(sorted) ;
+			 
+		/*public List&lt;Book&gt; getBestSellers(final String subject) {
+	 * HashMap&lt;Book,Integer&gt; sellCounter = new HashMap&lt;Book,Integer&gt;(); List&lt;Book&gt;
+	 * books = Bookstore.getInstance().getBooksById();
+	 * 
+	 * 
+	 * int quantity;
+	 * 
+	 * for(Book book : books) { quantity = 0;
+	 * 
+	 * if ( book.getSubject().equals(subject)) { for (Order order :
+	 * ordersByCreation) { if (order.getStatus().equals(&quot;SHIPPED&quot;)){ for (OrderLine
+	 * line : order.getLines()) { if (line.getBook().equals(book)) { quantity +=
+	 * line.getQty(); } } } } Integer value = sellCounter.get(book); if (value !=
+	 * null) { sellCounter.put(book, value +quantity); }else { sellCounter.put(book,
+	 * quantity); }
+	 * 
+	 * } }
+	 * 
+	 * LinkedHashMap&lt;Book, Integer&gt; sorted = sellCounter.entrySet() .stream()
+	 * .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(50)
+	 * .collect(Collectors.toMap(e-&gt; e.getKey(), e-&gt; e.getValue(), (e1, e2) -&gt; null,
+	 * () -&gt; new LinkedHashMap&lt;Book,Integer&gt;())); System.out.println(sorted) ;
+	 * 
+	 * List&lt;Book&gt; sortedList = new ArrayList&lt;&gt; (sorted.keySet());
+	 * 
+	 * System.out.println(sortedList); System.out.println(sorted);
+	 * 
+	 * return sortedList;
+	 * 
+	 * 
+	 * 
+	 * }
+	 * 
+	 
 
-<span class="pc bpc" id="L776" title="1 of 2 branches missed.">        if (bId != null) {</span>
-<span class="fc" id="L777">            cart.increaseLine(getBook(bId).get(), 1);</span>
-        }
+	/**
+	 *
+	 * @param subject
+	 * @return
+	 */
+	public Book createBook(String title, Date pubDate, String publisher, String subject, String desc, String thumbnail,
+			String image, double srp, double cost, Date avail, String isbn, int page, String backing, String dimensions,
+			Author author, int stock) {
+<span class="fc" id="L676">		int id = booksById.size();</span>
+<span class="fc" id="L677">		Book book = new Book(id, title, pubDate, publisher, subject, desc, thumbnail, image, srp, cost, avail, isbn,</span>
+				page, backing, dimensions, author, stock);
+<span class="fc" id="L679">		booksById.add(book);</span>
+<span class="fc" id="L680">		return book;</span>
+	}
 
-<span class="fc bfc" id="L780" title="All 2 branches covered.">        for (int i = 0; i &lt; bIds.size(); i++) {</span>
-<span class="fc" id="L781">            cart.changeLine(booksById.get(bIds.get(i)), quantities.get(i));</span>
-        }
+	/**
+	 *
+	 * @param bId
+	 * @param cost
+	 * @param image
+	 * @param thumbnail
+	 * @param now
+	 */
+	public void updateBook(int bId, double cost, String image, String thumbnail, long now) {
+<span class="fc" id="L692">		Book book = getBook(bId).get();</span>
+<span class="fc" id="L693">		book.setCost(cost);</span>
+<span class="fc" id="L694">		book.setImage(image);</span>
+<span class="fc" id="L695">		book.setThumbnail(thumbnail);</span>
+<span class="fc" id="L696">		book.setPubDate(new Date(now));</span>
+<span class="fc" id="L697">		updateRelatedBooks(book);</span>
+<span class="fc" id="L698">	}</span>
 
-<span class="fc" id="L784">        cart.setTime(new Date(now));</span>
+	/**
+	 * For all the clients that bought this book in the last 10000 orders, what are
+	 * the five most sold books except this one.
+	 */
+	private void updateRelatedBooks(Book targetBook) {
+<span class="fc" id="L705">		HashSet&lt;Integer&gt; clientIds = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L706">		int j = 0;</span>
+<span class="fc" id="L707">		Iterator&lt;Order&gt; i = ordersByCreation.iterator();</span>
+<span class="pc bpc" id="L708" title="1 of 4 branches missed.">		while (i.hasNext() &amp;&amp; j &lt;= 10000) {</span>
+<span class="fc" id="L709">			Order order = i.next();</span>
+<span class="fc bfc" id="L710" title="All 2 branches covered.">			for (OrderLine line : order.getLines()) {</span>
+<span class="fc" id="L711">				Book book = line.getBook();</span>
+<span class="pc bpc" id="L712" title="1 of 2 branches missed.">				if (targetBook.getId() == book.getId()) {</span>
+<span class="nc" id="L713">					clientIds.add(order.getCustomer().getId());</span>
+<span class="nc" id="L714">					break;</span>
+				}
+<span class="fc" id="L716">			}</span>
+<span class="fc" id="L717">			j++;</span>
+<span class="fc" id="L718">		}</span>
+<span class="fc" id="L719">		HashMap&lt;Integer, Counter&gt; counters = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L720">		i = ordersByCreation.iterator();</span>
+<span class="fc bfc" id="L721" title="All 2 branches covered.">		while (i.hasNext()) {</span>
+<span class="fc" id="L722">			Order order = i.next();</span>
+<span class="pc bpc" id="L723" title="1 of 2 branches missed.">			if (clientIds.contains(order.getCustomer().getId())) {</span>
+<span class="nc" id="L724">				order.getLines().forEach((line) -&gt; {</span>
+<span class="nc" id="L725">					Book book = line.getBook();</span>
+<span class="nc bnc" id="L726" title="All 2 branches missed.">					if (targetBook.getId() != book.getId()) {</span>
+<span class="nc" id="L727">						Counter counter = counters.get(book.getId());</span>
+<span class="nc bnc" id="L728" title="All 2 branches missed.">						if (counter == null) {</span>
+<span class="nc" id="L729">							counter = new Counter(book, 0);</span>
+<span class="nc" id="L730">							counters.put(book.getId(), counter);</span>
+						}
+<span class="nc" id="L732">						counter.count += line.getQty();</span>
+					}
+<span class="nc" id="L734">				});</span>
+			}
+<span class="fc" id="L736">		}</span>
+<span class="fc" id="L737">		Counter[] sorted = counters.values().toArray(new Counter[] {});</span>
+<span class="fc" id="L738">		Arrays.sort(sorted, (Counter a, Counter b) -&gt; {</span>
+<span class="nc bnc" id="L739" title="All 2 branches missed.">			if (b.count &gt; a.count) {</span>
+<span class="nc" id="L740">				return 1;</span>
+			}
+<span class="nc bnc" id="L742" title="All 2 branches missed.">			return b.count &lt; a.count ? -1 : 0;</span>
+		});
+<span class="fc" id="L744">		Book[] related = new Book[] { targetBook, targetBook, targetBook, targetBook, targetBook };</span>
+<span class="pc bpc" id="L745" title="2 of 4 branches missed.">		for (j = 0; j &lt; 5 &amp;&amp; j &lt; sorted.length; j++) {</span>
+<span class="nc" id="L746">			related[j] = sorted[j].book;</span>
+		}
+<span class="fc" id="L748">		targetBook.setRelated1(related[0]);</span>
+<span class="fc" id="L749">		targetBook.setRelated2(related[1]);</span>
+<span class="fc" id="L750">		targetBook.setRelated3(related[2]);</span>
+<span class="fc" id="L751">		targetBook.setRelated4(related[3]);</span>
+<span class="fc" id="L752">		targetBook.setRelated5(related[4]);</span>
+<span class="fc" id="L753">	}</span>
 
-<span class="fc" id="L786">        return cart;</span>
-    }
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
+	public Cart getCart(int id) {
+<span class="fc" id="L761">		return cartsById.get(id);</span>
+	}
 
-    /**
-     *
-     * @param customerId
-     * @param cartId
-     * @param comment
-     * @param ccType
-     * @param ccNumber
-     * @param ccName
-     * @param ccExpiry
-     * @param shipping
-     * @param shippingDate
-     * @param addressId
-     * @param now
-     * @return
-     */
-    public Order confirmBuy(int customerId, int cartId, String comment,
-            String ccType, long ccNumber, String ccName, Date ccExpiry,
-            String shipping, Date shippingDate, int addressId, long now) {
-<span class="fc" id="L807">        Customer customer = getCustomer(customerId);</span>
-<span class="fc" id="L808">        Cart cart = getCart(cartId);</span>
-<span class="fc" id="L809">        Address shippingAddress = customer.getAddress();</span>
-<span class="pc bpc" id="L810" title="1 of 2 branches missed.">        if (addressId != -1) {</span>
-<span class="fc" id="L811">            shippingAddress = addressById.get(addressId);</span>
-        }
-<span class="fc" id="L813">        cart.getLines().stream().map((cartLine) -&gt; {</span>
-<span class="fc" id="L814">            Book book = cartLine.getBook();</span>
-<span class="fc" id="L815">            book.addStock(-cartLine.getQty());</span>
-<span class="fc" id="L816">            return book;</span>
-<span class="fc bfc" id="L817" title="All 2 branches covered.">        }).filter((book) -&gt; (book.getStock() &lt; 10)).forEachOrdered((book) -&gt; {</span>
-<span class="fc" id="L818">            book.addStock(21);</span>
-<span class="fc" id="L819">        });</span>
-<span class="fc" id="L820">        CCTransaction ccTransact = new CCTransaction(ccType, ccNumber, ccName,</span>
-<span class="fc" id="L821">                ccExpiry, &quot;&quot;, cart.total(customer.getDiscount()),</span>
-<span class="fc" id="L822">                new Date(now), shippingAddress.getCountry());</span>
-<span class="fc" id="L823">        return createOrder(customer, new Date(now), cart, comment, shipping,</span>
-<span class="fc" id="L824">                shippingDate, &quot;Pending&quot;, customer.getAddress(),</span>
-                shippingAddress, ccTransact);
-    }
+	/**
+	 *
+	 * @param now
+	 * @return
+	 */
+	public Cart createCart(long now) {
+<span class="fc" id="L770">		int id = cartsById.size();</span>
+<span class="fc" id="L771">		Cart cart = new Cart(id, new Date(now));</span>
+<span class="fc" id="L772">		cartsById.add(cart);</span>
+<span class="fc" id="L773">		return cart;</span>
+	}
 
-    public Order createOrder(Customer customer, Date date, Cart cart,
-            String comment, String shipType, Date shipDate,
-            String status, Address billingAddress, Address shippingAddress,
-            CCTransaction cc) {
-<span class="fc" id="L832">        int id = ordersById.size();</span>
-<span class="fc" id="L833">        Order order = new Order(id, customer, date, cart, comment, shipType,</span>
-                shipDate, status, billingAddress, shippingAddress, cc);
-<span class="fc" id="L835">        ordersById.add(order);</span>
-<span class="fc" id="L836">        ordersByCreation.addFirst(order);</span>
-<span class="fc" id="L837">        customer.logOrder(order);</span>
-<span class="fc" id="L838">        cart.clear();</span>
-<span class="fc" id="L839">        return order;</span>
-    }
+	/**
+	 *
+	 * @param cId
+	 * @param bId
+	 * @param bIds
+	 * @param quantities
+	 * @param now
+	 * @return
+	 */
+	public Cart updateCart(int cId, Integer bId, List&lt;Integer&gt; bIds, List&lt;Integer&gt; quantities, long now) {
+<span class="fc" id="L786">		Cart cart = getCart(cId);</span>
 
-    public Order getOrderById(int id){
-<span class="pc bpc" id="L843" title="1 of 2 branches missed.">        if(id &gt;= ordersById.size())</span>
-<span class="nc" id="L844">            return null;</span>
-<span class="pc bpc" id="L845" title="1 of 2 branches missed.">        if(id &lt; 0)</span>
-<span class="nc" id="L846">            return null;</span>
-<span class="fc" id="L847">        return ordersById.get(id);</span>
-    }
+<span class="pc bpc" id="L788" title="1 of 2 branches missed.">		if (bId != null) {</span>
+<span class="fc" id="L789">			cart.increaseLine(getBook(bId).get(), 1);</span>
+		}
 
-    public Order updateOrder(int id, String status) {
-<span class="fc" id="L851">        Order order = getOrderById(id);</span>
-<span class="pc bpc" id="L852" title="1 of 2 branches missed.">        if(order != null) {</span>
-<span class="fc" id="L853">            order.setStatus(status);</span>
-        }
-<span class="fc" id="L855">        return order;</span>
-    }
+<span class="fc bfc" id="L792" title="All 2 branches covered.">		for (int i = 0; i &lt; bIds.size(); i++) {</span>
+<span class="fc" id="L793">			cart.changeLine(booksById.get(bIds.get(i)), quantities.get(i));</span>
+		}
 
-    public Order cancelOrder(int id) {
-<span class="fc" id="L859">        Order order = getOrderById(id);</span>
-<span class="pc bpc" id="L860" title="1 of 2 branches missed.">        if(order != null) {</span>
-<span class="pc bpc" id="L861" title="1 of 2 branches missed.">            if (&quot;PENDING&quot;.equals(order.getStatus().toUpperCase())) {</span>
-<span class="fc" id="L862">                order.setStatus(&quot;CANCELED&quot;);</span>
-            }
-        }
-<span class="fc" id="L865">        return order;</span>
-    }
+<span class="fc" id="L796">		cart.setTime(new Date(now));</span>
+
+<span class="fc" id="L798">		return cart;</span>
+	}
+
+	/**
+	 *
+	 * @param customerId
+	 * @param cartId
+	 * @param comment
+	 * @param ccType
+	 * @param ccNumber
+	 * @param ccName
+	 * @param ccExpiry
+	 * @param shipping
+	 * @param shippingDate
+	 * @param addressId
+	 * @param now
+	 * @return
+	 */
+	public Order confirmBuy(int customerId, int cartId, String comment, String ccType, long ccNumber, String ccName,
+			Date ccExpiry, String shipping, Date shippingDate, int addressId, long now) {
+<span class="fc" id="L818">		Customer customer = getCustomer(customerId);</span>
+<span class="fc" id="L819">		Cart cart = getCart(cartId);</span>
+<span class="fc" id="L820">		Address shippingAddress = customer.getAddress();</span>
+<span class="pc bpc" id="L821" title="1 of 2 branches missed.">		if (addressId != -1) {</span>
+<span class="fc" id="L822">			shippingAddress = addressById.get(addressId);</span>
+		}
+<span class="fc" id="L824">		cart.getLines().stream().map((cartLine) -&gt; {</span>
+<span class="fc" id="L825">			Book book = cartLine.getBook();</span>
+<span class="fc" id="L826">			book.addStock(-cartLine.getQty());</span>
+<span class="fc" id="L827">			return book;</span>
+<span class="fc bfc" id="L828" title="All 2 branches covered.">		}).filter((book) -&gt; (book.getStock() &lt; 10)).forEachOrdered((book) -&gt; {</span>
+<span class="fc" id="L829">			book.addStock(21);</span>
+<span class="fc" id="L830">		});</span>
+<span class="fc" id="L831">		CCTransaction ccTransact = new CCTransaction(ccType, ccNumber, ccName, ccExpiry, &quot;&quot;,</span>
+<span class="fc" id="L832">				cart.total(customer.getDiscount()), new Date(now), shippingAddress.getCountry());</span>
+<span class="fc" id="L833">		return createOrder(customer, new Date(now), cart, comment, shipping, shippingDate, &quot;Pending&quot;,</span>
+<span class="fc" id="L834">				customer.getAddress(), shippingAddress, ccTransact);</span>
+	}
+
+	public Order createOrder(Customer customer, Date date, Cart cart, String comment, String shipType, Date shipDate,
+			String status, Address billingAddress, Address shippingAddress, CCTransaction cc) {
+<span class="fc" id="L839">		int id = ordersById.size();</span>
+<span class="fc" id="L840">		Order order = new Order(id, customer, date, cart, comment, shipType, shipDate, status, billingAddress,</span>
+				shippingAddress, cc);
+<span class="fc" id="L842">		ordersById.add(order);</span>
+<span class="fc" id="L843">		ordersByCreation.addFirst(order);</span>
+<span class="fc" id="L844">		customer.logOrder(order);</span>
+<span class="fc" id="L845">		cart.clear();</span>
+<span class="fc" id="L846">		return order;</span>
+	}
+
+	public Order getOrderById(int id) {
+<span class="pc bpc" id="L850" title="1 of 2 branches missed.">		if (id &gt;= ordersById.size())</span>
+<span class="nc" id="L851">			return null;</span>
+<span class="pc bpc" id="L852" title="1 of 2 branches missed.">		if (id &lt; 0)</span>
+<span class="nc" id="L853">			return null;</span>
+<span class="fc" id="L854">		return ordersById.get(id);</span>
+	}
+
+	public Order updateOrder(int id, String status) {
+<span class="fc" id="L858">		Order order = getOrderById(id);</span>
+<span class="pc bpc" id="L859" title="1 of 2 branches missed.">		if (order != null) {</span>
+<span class="fc" id="L860">			order.setStatus(status);</span>
+		}
+<span class="fc" id="L862">		return order;</span>
+	}
+
+	public Order cancelOrder(int id) {
+<span class="fc" id="L866">		Order order = getOrderById(id);</span>
+<span class="pc bpc" id="L867" title="1 of 2 branches missed.">		if (order != null) {</span>
+<span class="pc bpc" id="L868" title="1 of 2 branches missed.">			if (&quot;PENDING&quot;.equals(order.getStatus().toUpperCase())) {</span>
+<span class="fc" id="L869">				order.setStatus(&quot;CANCELED&quot;);</span>
+			}
+		}
+<span class="fc" id="L872">		return order;</span>
+	}
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

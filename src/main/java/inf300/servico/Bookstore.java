@@ -19,6 +19,8 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import inf300.dominio.Address;
@@ -562,6 +564,12 @@ public class Bookstore implements Serializable {
 			return this.count;
 		}
 	}
+	public List <Counter> getCounterSellers(int qty, String subject){
+		
+		
+		return null;
+	}
+	
 
 	/**
 	 * <b><u>Tarefa: desenvolver o método getBestSellers. </u></b><br>
@@ -576,12 +584,12 @@ public class Bookstore implements Serializable {
 	 */
 
 	public List<Book> getBestSellers(final String subject) {
-		ArrayList<Book> bestsellers = new ArrayList<>();
-		HashMap<Book, Integer> sellCounter = new HashMap<>();
+		
+		HashMap<Book, Integer> sellCounter = new  HashMap<>();
 		ArrayList<OrderLine> lines = new ArrayList<>();
 		
 
-		List<Order> orders = ordersById.stream().filter(order -> "SHIPPED".equals(order.getStatus()))
+		List<Order> orders = ordersById.parallelStream().filter(order -> "SHIPPED".equals(order.getStatus()))
 				.collect(Collectors.toList());
 		for (Order order :orders){
 			for (OrderLine line : order.getLines()) {
@@ -590,25 +598,37 @@ public class Bookstore implements Serializable {
 				}
 			}
 		}
+		//orders.parallelStream().forEach(null); //
 		
 		for (OrderLine line : lines) {
 			if (Objects.isNull(sellCounter.get(line.getBook()))) {
 				sellCounter.put(line.getBook(), line.getQty());
 			}
+			
 			sellCounter.merge(line.getBook(), line.getQty(),Integer::sum);
+			
+		
+			
+					
 			
 		}
 		LinkedHashMap<Book, Integer> sorted = sellCounter.entrySet() .stream()
-				  .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(50)
-				  .collect(Collectors.toMap(e-> e.getKey(), e-> e.getValue(), (e1, e2) -> null,
-			 () -> new LinkedHashMap<Book,Integer>())); System.out.println(sorted) ;
-			 List<Book> sortedList = new ArrayList<> (sorted.keySet());
+		
+								 
+				                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(50).sequential()
+				                  .collect(Collectors.toMap(e-> e.getKey(), e-> e.getValue(), (e1, e2) -> null,
+		                           () -> new LinkedHashMap<Book,Integer>()));
+			                       List<Book> sortedList = new ArrayList<> (sorted.keySet());
 			 
 			 return sortedList;
 				  
 	}
 	
 	
+		
+
+
+	// System.out.println(sorted) ;
 			 
 		/*public List<Book> getBestSellers(final String subject) {
 	 * HashMap<Book,Integer> sellCounter = new HashMap<Book,Integer>(); List<Book>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="18" failures="0" name="inf300.servico.BookstoreFunctionalTest" time="51.108" errors="0" skipped="0">
+<testsuite tests="18" failures="0" name="inf300.servico.BookstoreFunctionalTest" time="0.183" errors="0" skipped="0">
   <properties>
     <property name="jansi.mode" value="strip"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
@@ -26,13 +26,15 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 10"/>
-    <property name="classworlds.conf" value="C:\Users\gerso\eclipse-workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf12285211198573747250.tmp"/>
+    <property name="org.eclipse.jetty.util.log.class" value="org.eclipse.jetty.util.log.StdErrLog"/>
+    <property name="classworlds.conf" value="C:\Users\gerso\eclipse-workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf3038811882614429271.tmp"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="java.library.path" value="C:\Program Files\Java\jdk-17.0.1\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32;C:\Program Files\nodejs\;C:\Users\gerso\AppData\Local\Programs\Python\Python39;C:\Temp\apache-maven-3.8.5-bin\apache-maven-3.8.5\bin;C:\Program Files\Java\jdk-17.0.1;C:\Program Files\MongoDB\Server\5.0\bin;C:\Program Files\MongoDB\Tools\100\bin;C:\Program Files\dotnet\;C:\Temp\apache-maven-3.8.5-bin\apache-maven-3.8.5\bin;C:\Windows\System32;;C:\Users\gerso\AppData\Local\Programs\Microsoft VS Code\bin;."/>
     <property name="jdk.debug" value="release"/>
     <property name="java.class.version" value="61.0"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="org.eclipse.jetty.LEVEL" value="INFO"/>
     <property name="os.version" value="10.0"/>
     <property name="user.home" value="C:\Users\gerso"/>
     <property name="user.timezone" value="America/Sao_Paulo"/>
@@ -42,7 +44,7 @@
     <property name="java.class.path" value="C:\Users\gerso\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_1.18.3.20220227-1319\jars\plexus-classworlds-2.6.0.jar"/>
     <property name="java.vm.specification.version" value="17"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B install"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-17.0.1"/>
     <property name="user.language" value="pt"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -58,22 +60,22 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testIsPopulated" time="0.003"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBestSellers" time="50.87"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testCreateCustomer" time="0.001"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetNewBooks" time="0.034"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testUpdateBook" time="0.045"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBook" time="0.001"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetCart" time="0.003"/>
   <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testCartUpdate" time="0"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testConfirmBuy" time="0.005"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testCancelOrder" time="0"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetCart" time="0"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBooksBySubject" time="0.002"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetNewBooksVersions" time="0.109"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testConfirmBuy" time="0.004"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testIsPopulated" time="0"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testCreateCustomer" time="0"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBook" time="0"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetNewBooks" time="0.022"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testUpdateBook" time="0.025"/>
   <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testAlwaysGetAddress" time="0"/>
   <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetCustomer_int" time="0"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testRefreshCustomerSession" time="0"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBooksByAuthor" time="0"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBooksBySubject" time="0"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBooksByTitle" time="0.041"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetNewBooksVersions" time="0.058"/>
   <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetCustomer_String" time="0.001"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testRefreshCustomerSession" time="0.001"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBooksByTitle" time="0.034"/>
-  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBooksByAuthor" time="0.002"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testCancelOrder" time="0"/>
+  <testcase classname="inf300.servico.BookstoreFunctionalTest" name="testGetBestSellers" time="0.029"/>
 </testsuite>
