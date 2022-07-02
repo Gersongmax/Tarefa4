@@ -277,7 +277,8 @@ public class BookstoreFunctionalTest {
         Date shippingDate = null;
         int addressId = 0;
         long now = 0L;
-        Order result = instance.confirmBuy(customerId, cartId, comment, ccType, ccNumber, ccName, ccExpiry, shipping,
+        Cart cart = instance.createCart(now);
+        Order result = instance.confirmBuy(customerId, cart.getId(), comment, ccType, ccNumber, ccName, ccExpiry, shipping,
                 shippingDate, addressId, now);
         Order expResult = instance.getOrderById(result.getId());
         assertEquals(expResult, result);

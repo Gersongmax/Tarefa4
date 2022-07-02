@@ -39,7 +39,7 @@ public class BookController {
                 + "</head>"
                 + "<body><h1>"
                 + "Olá!"
-                + "</h1></body>"
+                 + "</h1></body>"
                 + "<html>";
     }
 
@@ -59,6 +59,15 @@ public class BookController {
                 .stream()
                 .map(c -> new CounterTO(c)).collect(Collectors.toList());
     }
+    
+    @GET
+    @Path("/best/{subject}")
+    public List<BookTO> getBest(@PathParam(value = "subject") final String subject) {
+       List<Book> bestSellers = Bookstore.getInstance().getBestSellers(subject);
+        return bestSellers
+                .stream().map(BookTO::new).collect(Collectors.toList());
+    }
+    
 
     @XmlRootElement(name = "book")
     public static class BookTO implements Serializable {
@@ -104,7 +113,10 @@ public class BookController {
     @XmlRootElement(name = "counter")
     public static class CounterTO extends BookTO implements Serializable {
 
+        private int id;
         private int qty;
+        private String title;
+        private String subject;
 
         public CounterTO() {
         }
@@ -112,6 +124,19 @@ public class BookController {
         public CounterTO(@NotNull Counter counter) {
             super(counter.getBook());
             this.qty = counter.getCounter();
+            this.id = counter.getBook().getId();
+            this.title = counter.getBook().getTitle();
+            this.subject = counter.getBook().getSubject();
+        }
+
+        @Override
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public void setId(int id) {
+            this.id = id;
         }
 
         public int getQty() {
@@ -121,6 +146,26 @@ public class BookController {
         public void setQty(int qty) {
             this.qty = qty;
         }
-    }
 
+        @Override
+        public String getTitle() {
+            return title;
+        }
+
+        @Override
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        @Override
+        public String getSubject() {
+            return subject;
+        }
+
+        @Override
+        public void setSubject(String subject) {
+            this.subject = subject;
+        }
+
+    }
 }

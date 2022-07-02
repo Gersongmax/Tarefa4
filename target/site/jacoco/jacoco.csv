@@ -1,24 +1,27 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 tarefa2-incompleta,inf300.util,Populator,2,2195,1,33,1,157,1,24,0,8
 tarefa2-incompleta,inf300.util,TPCW_Util,19,1694,4,15,4,46,4,19,1,8
-tarefa2-incompleta,inf300.servico,Bookstore.Counter,15,0,0,0,6,0,3,0,3,0
-tarefa2-incompleta,inf300.servico,Bookstore,153,1292,36,66,32,240,37,81,8,59
 tarefa2-incompleta,inf300.servico,Bookstore.new Comparator() {...},0,22,0,2,0,5,0,3,0,2
-tarefa2-incompleta,inf300.control,BuyController.OrderTO,45,0,0,0,20,0,13,0,13,0
+tarefa2-incompleta,inf300.servico,Bookstore.Counter,15,0,0,0,6,0,3,0,3,0
+tarefa2-incompleta,inf300.servico,Bookstore,173,1203,38,60,37,224,40,72,10,53
+tarefa2-incompleta,inf300.control,BuyController.OrderTO,94,0,0,0,30,0,16,0,16,0
 tarefa2-incompleta,inf300.control,BookController.BookTO,39,0,0,0,16,0,8,0,8,0
-tarefa2-incompleta,inf300.control,BuyController.CartTO,30,0,0,0,15,0,9,0,9,0
-tarefa2-incompleta,inf300.control,BuyController,17,0,0,0,8,0,8,0,8,0
-tarefa2-incompleta,inf300.control,BookController.CounterTO,19,0,0,0,8,0,4,0,4,0
-tarefa2-incompleta,inf300.control,BookController,27,0,0,0,9,0,5,0,5,0
-tarefa2-incompleta,inf300.control,BuyController.BuyTO,73,0,0,0,32,0,21,0,21,0
-tarefa2-incompleta,inf300.dominio,Book,46,156,2,2,16,57,16,22,14,22
+tarefa2-incompleta,inf300.control,BuyController.CartTO,63,0,0,0,20,0,11,0,11,0
+tarefa2-incompleta,inf300.control,BuyController,101,0,0,0,11,0,9,0,9,0
+tarefa2-incompleta,inf300.control,BuyController.BuyTO,76,0,0,0,34,0,22,0,22,0
+tarefa2-incompleta,inf300.control,ClientBuyController.new GenericType() {...},3,0,0,0,1,0,1,0,1,0
+tarefa2-incompleta,inf300.control,ClientBuyController.new GenericType() {...},3,0,0,0,1,0,1,0,1,0
+tarefa2-incompleta,inf300.control,ClientBuyController,389,0,0,0,60,0,2,0,2,0
+tarefa2-incompleta,inf300.control,BookController.CounterTO,55,0,0,0,20,0,10,0,10,0
+tarefa2-incompleta,inf300.control,BookController,39,0,0,0,12,0,6,0,6,0
+tarefa2-incompleta,inf300.dominio,Book,56,146,2,2,19,54,18,20,16,20
 tarefa2-incompleta,inf300.dominio,CCTransaction,24,27,0,0,8,10,8,1,8,1
 tarefa2-incompleta,inf300.dominio,OrderLine,6,21,0,0,2,8,2,3,2,3
 tarefa2-incompleta,inf300.dominio,Address,30,105,7,7,10,23,16,4,9,4
-tarefa2-incompleta,inf300.dominio,Country,11,34,1,1,4,11,4,4,3,4
-tarefa2-incompleta,inf300.dominio,Cart,20,166,3,5,4,34,5,11,2,10
-tarefa2-incompleta,inf300.dominio,Customer,247,221,21,21,53,57,33,13,12,13
 tarefa2-incompleta,inf300.dominio,Author,12,21,0,0,4,8,4,2,4,2
 tarefa2-incompleta,inf300.dominio,CartLine,0,19,0,0,0,8,0,4,0,4
 tarefa2-incompleta,inf300.dominio,Order,27,97,0,2,9,26,9,7,9,6
+tarefa2-incompleta,inf300.dominio,Country,11,34,1,1,4,11,4,4,3,4
+tarefa2-incompleta,inf300.dominio,Cart,17,169,3,5,3,35,4,12,1,11
+tarefa2-incompleta,inf300.dominio,Customer,247,221,21,21,53,57,33,13,12,13
 tarefa2-incompleta,inf300,JAXRSConfiguration,3,0,0,0,1,0,1,0,1,0

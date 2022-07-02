@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -582,7 +583,30 @@ public class Bookstore implements Serializable {
 	 * @param subject
 	 * @return
 	 */
+	public List<Book> getBestSellers(final String subject) {
+        Map<Book, Integer> booksQuatitySelled = new ConcurrentHashMap<>();
+        // 1. Buscar e separar as vendas dos livros de um assunto
+        // 2. Somar as quantidades vendidas por livro e armazenar estas informações ("livro X quantidade vendida")
+        ordersById.parallelStream().forEach(
+                order -> {
+                    if ("SHIPPED".equals(order.getStatus())) {
+                        for (OrderLine orderLine : order.getLines()) {
+                            if (subject.equals(orderLine.getBook().getSubject())) {
+                                booksQuatitySelled.merge(orderLine.getBook(), orderLine.getQty(), Integer::sum);
+                            }
+                        }
+                    }
+                }
+        );
 
+        // 3. Ordenar as informações "livro X quantidade vendida" e retornar os 50 livros mais vendidos
+        return booksQuatitySelled.entrySet().stream().sorted(Map.Entry.<Book, Integer>comparingByValue().reversed())
+                .limit(50).parallel().map(Map.Entry::getKey).collect(Collectors.toList());
+    }
+	
+	
+	
+	/*
 	public List<Book> getBestSellers(final String subject) {
 		
 		HashMap<Book, Integer> sellCounter = new  HashMap<>();
@@ -625,7 +649,7 @@ public class Bookstore implements Serializable {
 	}
 	
 	
-		
+		*/
 
 
 	// System.out.println(sorted) ;
